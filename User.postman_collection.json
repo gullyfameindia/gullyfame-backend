@@ -1,0 +1,2534 @@
+{
+  "info": {
+    "_postman_id": "4341f6f8-1020-486a-adb1-b4b33fc7aa96",
+    "name": "User",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50068732",
+    "_collection_link": "https://go.postman.co/collection/50068732-4341f6f8-1020-486a-adb1-b4b33fc7aa96?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"last\",\r\n    \"mobile\": \"2531456985\",\r\n    \"email\": \"test1@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"role\": \"participants\" //participants or fan\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/register",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Register",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"firstName\": \"test\",\r\n    \"lastName\": \"last\",\r\n    \"mobile\": \"2531456985\",\r\n    \"email\": \"test1@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"role\": \"participants\" //participants or fan\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/register",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "40"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"28-IA5aNBZx8WPOym4aktRlrbIo0ZU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:39:47 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": \"2531456985\", //This will contain email or mobile\r\n    \"viaPassword\": true, //true => for password, false for otp\r\n    \"password\": \"123456789\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/login",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Login via password",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"userId\": \"test1@gmail.com\", //This will contain email or mobile\r\n    \"viaPassword\": true, //true => for password, false for otp\r\n    \"password\": \"123456789\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/login",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "628"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"274-98HdPxgGLeFn6aIkCq2VsGyKbpg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:54:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"data\": {\n        \"user\": {\n            \"location\": {\n                \"type\": \"Point\",\n                \"coordinates\": [\n                    0,\n                    0\n                ]\n            },\n            \"_id\": \"69298a032f1df96886b776ee\",\n            \"firstName\": \"test\",\n            \"lastName\": \"last\",\n            \"email\": \"test1@gmail.com\",\n            \"profileImage\": \"\",\n            \"gender\": \"\",\n            \"role\": \"participants\",\n            \"dob\": \"\",\n            \"mobile\": \"2531456985\",\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"notificationAllowed\": true,\n            \"googleId\": \"\",\n            \"appleId\": \"\",\n            \"device_token\": \"\",\n            \"device_type\": \"\",\n            \"createdAt\": \"2025-11-28T11:39:47.454Z\",\n            \"updatedAt\": \"2025-11-28T11:39:47.454Z\",\n            \"__v\": 0\n        },\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI5OGEwMzJmMWRmOTY4ODZiNzc2ZWUiLCJpYXQiOjE3NjQzMzA4NzB9._Rpf1-wjiMn5v_MM5d_wjW8ldmnt6g96CH4bM3nFr4A\"\n    }\n}"
+            },
+            {
+              "name": "Login via password with mobile",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"userId\": \"2531456985\", //This will contain email or mobile\r\n    \"viaPassword\": true, //true => for password, false for otp\r\n    \"password\": \"123456789\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/login",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "628"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"274-93thZOC0xPzZ26VIoh+ZxcWhe28\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:55:01 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"data\": {\n        \"user\": {\n            \"location\": {\n                \"type\": \"Point\",\n                \"coordinates\": [\n                    0,\n                    0\n                ]\n            },\n            \"_id\": \"69298a032f1df96886b776ee\",\n            \"firstName\": \"test\",\n            \"lastName\": \"last\",\n            \"email\": \"test1@gmail.com\",\n            \"profileImage\": \"\",\n            \"gender\": \"\",\n            \"role\": \"participants\",\n            \"dob\": \"\",\n            \"mobile\": \"2531456985\",\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"notificationAllowed\": true,\n            \"googleId\": \"\",\n            \"appleId\": \"\",\n            \"device_token\": \"\",\n            \"device_type\": \"\",\n            \"createdAt\": \"2025-11-28T11:39:47.454Z\",\n            \"updatedAt\": \"2025-11-28T11:39:47.454Z\",\n            \"__v\": 0\n        },\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI5OGEwMzJmMWRmOTY4ODZiNzc2ZWUiLCJpYXQiOjE3NjQzMzA5MDF9.RJuuA1qh_SQ0eZjq2cbaqpLimyjeJDLUzOhuTSyi5Xc\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "VerifyOtp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"txnId\": \"2e0092c3-c4dd-46f5-b721-56fe5e8d7263\",\r\n    \"otp\": 123456\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/verifyOtp",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "verifyOtp"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "VerifyOtp",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"txnId\": \"0c0ae783-92b0-489f-a4b0-e1fc738681da\",\r\n    \"otp\": 123456\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/verifyOtp",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "verifyOtp"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "250"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"fa-iYbwKY4DP0G+YKOQ30TdHnEdgts\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 12:02:19 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"login successfully\",\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI5OGEwMzJmMWRmOTY4ODZiNzc2ZWUiLCJpYXQiOjE3NjQzMzEzMzl9.WNKzMWe7FQ5E4Pe8QWnyP3O4M3qBMKaNlMQI9tZZXTo\",\n        \"userId\": \"69298a032f1df96886b776ee\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Forgot password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\":\"test1@gmail.com\" //email or mobile\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/forgot-password",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "forgot-password"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Forgot password",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"userId\":\"test1@gmail.com\" //email or mobile\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/forgot-password",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "forgot-password"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "40"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"28-IA5aNBZx8WPOym4aktRlrbIo0ZU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 12:16:25 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\":\"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/reset-password",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Reset password",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"password\":\"12345678\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/reset-password",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "reset-password"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "95"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"5f-477NDHS1YbH3oAo4dQ1KpInhY6Q\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 12:19:28 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"Password updated successfully. Please login with new password!\",\n    \"data\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Social login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"googleId\": \"ndfgkjhdfjkgkjfdng\",\r\n    // \"appleId\": \"\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Test\",\r\n    \"device_token\": \"sngjhdfjgkj\",\r\n    \"device_type\": \"ios\" //\"android\", \"ios\", \"web\", \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/login/social",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "login",
+                "social"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Social login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"googleId\": \"ndfgkjhdfjkgkjfdng\",\r\n    // \"appleId\": \"\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Test\",\r\n    \"device_token\": \"sngjhdfjgkj\",\r\n    \"device_type\": \"ios\" //\"android\", \"ios\", \"web\", \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/login/social",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "login",
+                    "social"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "657"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"291-0hzydZ2rM0uTFu6z2XABGCagL58\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:01:54 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"user\": {\n            \"location\": {\n                \"type\": \"Point\",\n                \"coordinates\": [\n                    0,\n                    0\n                ]\n            },\n            \"_id\": \"692981224451c1fe436ea352\",\n            \"firstName\": \"Test\",\n            \"lastName\": \"Test\",\n            \"email\": \"test@gmail.com\",\n            \"profileImage\": \"\",\n            \"gender\": \"\",\n            \"role\": \"participants\",\n            \"dob\": \"\",\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"notificationAllowed\": true,\n            \"googleId\": \"ndfgkjhdfjkgkjfdng\",\n            \"appleId\": \"\",\n            \"device_token\": \"sngjhdfjgkj\",\n            \"device_type\": \"ios\",\n            \"createdAt\": \"2025-11-28T11:01:54.277Z\",\n            \"updatedAt\": \"2025-11-28T11:01:54.277Z\",\n            \"__v\": 0\n        },\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTI5ODEyMjQ0NTFjMWZlNDM2ZWEzNTIiLCJpYXQiOjE3NjQzMjc3MTR9.2AV4i9nr6UXkvU26g-Li3kiX83tddO8pUthPK-Y5cAg\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Resend otp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": \"2531456985\" //email or mobile\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}auth/resendOtp",
+              "host": [
+                "{{BASE_URL}}auth"
+              ],
+              "path": [
+                "resendOtp"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Resend otp",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"userId\": \"2531456985\" //email or mobile\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}auth/resendOtp",
+                  "host": [
+                    "{{BASE_URL}}auth"
+                  ],
+                  "path": [
+                    "resendOtp"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "66"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"42-puUoORXZNDf5iFSJ8rCxZvhFkfQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 12:08:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"data\": {\n        \"txnId\": \"2e0092c3-c4dd-46f5-b721-56fe5e8d7263\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/profile",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Detail",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}user/profile",
+                  "host": [
+                    "{{BASE_URL}}user"
+                  ],
+                  "path": [
+                    "profile"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "484"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1e4-doO7dfepQgY/knpR5IKHKDV+dUs\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:03:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"location\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                0,\n                0\n            ]\n        },\n        \"_id\": \"692981224451c1fe436ea352\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"Test\",\n        \"email\": \"test@gmail.com\",\n        \"profileImage\": \"\",\n        \"gender\": \"\",\n        \"role\": \"participants\",\n        \"dob\": \"\",\n        \"isActive\": true,\n        \"isDeleted\": false,\n        \"notificationAllowed\": true,\n        \"googleId\": \"ndfgkjhdfjkgkjfdng\",\n        \"appleId\": \"\",\n        \"device_token\": \"sngjhdfjgkj\",\n        \"device_type\": \"ios\",\n        \"createdAt\": \"2025-11-28T11:01:54.277Z\",\n        \"updatedAt\": \"2025-11-28T11:01:54.277Z\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/profile",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Home Screen",
+      "item": [
+        {
+          "name": "Home screen",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/homeScreen",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "homeScreen"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Home screen",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}user/homeScreen",
+                  "host": [
+                    "{{BASE_URL}}user"
+                  ],
+                  "path": [
+                    "homeScreen"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1969"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"7b1-gRsLvcEKRm7RwN/LywXGJ6QLJ3k\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 28 Nov 2025 11:11:50 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"banners\": [\n            {\n                \"id\": 1,\n                \"title\": \"Festive Fashion Specials\",\n                \"subtitle\": \"Big Styles, Big Savings!\",\n                \"image\": \"/images/banners/festive1.png\"\n            },\n            {\n                \"id\": 2,\n                \"title\": \"Mega Sale\",\n                \"subtitle\": \"50% OFF on All Brands\",\n                \"image\": \"/images/banners/festive2.png\"\n            }\n        ],\n        \"categories\": [\n            {\n                \"id\": 1,\n                \"name\": \"Music\",\n                \"icon\": \"/images/categories/music.png\"\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Dance\",\n                \"icon\": \"/images/categories/dance.png\"\n            },\n            {\n                \"id\": 3,\n                \"name\": \"Cooking\",\n                \"icon\": \"/images/categories/cooking.png\"\n            },\n            {\n                \"id\": 4,\n                \"name\": \"Comedy\",\n                \"icon\": \"/images/categories/comedy.png\"\n            }\n        ],\n        \"trending\": [\n            {\n                \"id\": 101,\n                \"title\": \"Dance-Off Delhi\",\n                \"category\": \"Dance\",\n                \"views\": 214000,\n                \"image\": \"/images/trending/dance-off.png\",\n                \"likes\": 136\n            },\n            {\n                \"id\": 102,\n                \"title\": \"Gully Chef Wars\",\n                \"category\": \"Cooking\",\n                \"views\": 98000,\n                \"image\": \"/images/trending/chef-wars.png\",\n                \"likes\": 82\n            },\n            {\n                \"id\": 103,\n                \"title\": \"Mic-Drop Battle\",\n                \"category\": \"Music\",\n                \"views\": 143000,\n                \"image\": \"/images/trending/mic-drop.png\",\n                \"likes\": 117\n            }\n        ],\n        \"upcomingCompetitions\": [\n            {\n                \"id\": 201,\n                \"title\": \"Hip-Hop Championship 2025\",\n                \"prize\": 5000,\n                \"image\": \"/images/upcoming/hiphop.png\",\n                \"endDate\": \"2026-03-08T09:00:00.000Z\",\n                \"participants\": 500\n            },\n            {\n                \"id\": 202,\n                \"title\": \"Cooking Wars\",\n                \"prize\": 5000,\n                \"image\": \"/images/upcoming/cooking.png\",\n                \"endDate\": \"2026-03-11T09:00:00.000Z\",\n                \"participants\": 500\n            },\n            {\n                \"id\": 203,\n                \"title\": \"Sangeet Ka Mahasangram\",\n                \"prize\": 3000,\n                \"image\": \"/images/upcoming/sangeet.png\",\n                \"endDate\": \"2026-03-09T09:00:00.000Z\",\n                \"participants\": 500\n            }\n        ],\n        \"pastCompetitions\": [\n            {\n                \"id\": 301,\n                \"title\": \"Hip-Hop Championship 2024\",\n                \"views\": 89000,\n                \"image\": \"/images/past/hiphop-past.png\",\n                \"winner\": \"test\"\n            },\n            {\n                \"id\": 302,\n                \"title\": \"Cooking Wars Finale\",\n                \"views\": 55000,\n                \"image\": \"/images/past/cooking-past.png\",\n                \"winner\": \"test\"\n            },\n            {\n                \"id\": 303,\n                \"title\": \"Sangeet Final Round\",\n                \"views\": 74000,\n                \"image\": \"/images/past/sangeet-past.png\",\n                \"winner\": \"test\"\n            }\n        ],\n        \"topCompetitors\": [\n            {\n                \"rank\": 1,\n                \"name\": \"Bryan Wolf\",\n                \"points\": 453,\n                \"image\": \"/images/competitors/bryan.png\"\n            },\n            {\n                \"rank\": 2,\n                \"name\": \"Meghan Joseph\",\n                \"points\": 409,\n                \"image\": \"/images/competitors/meghan.png\"\n            },\n            {\n                \"rank\": 3,\n                \"name\": \"Alex Turner\",\n                \"points\": 376,\n                \"image\": \"/images/competitors/alex.png\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/categories?page=1&limit=50",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Categories",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}user/categories?page=1&limit=50",
+                  "host": [
+                    "{{BASE_URL}}user"
+                  ],
+                  "path": [
+                    "categories"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 50,\n        \"totalCategories\": 4,\n        \"categories\": [\n            {\n                \"id\": \"695b90786d823b423a70e84c\",\n                \"label\": \"Cook\",\n                \"icon\": \"https://bank-ster-dev.s3.ap-south-1.amazonaws.com/1767608439599_Cook_category.png\",\n                \"banner\": \"/images/categories/cook-banner.png\",\n                \"tagline\": \"Master the Kitchen\",\n                \"description\": \"Showcase your culinary skills\",\n                \"followersCount\": 12400,\n                \"activeContestantsCount\": 12\n            },\n            {\n                \"id\": \"695b8cf96d823b423a70e837\",\n                \"label\": \"Fitness\",\n                \"icon\": \"\",\n                \"banner\": \"\",\n                \"tagline\": \"\",\n                \"description\": \"\",\n                \"followersCount\": 8500,\n                \"activeContestantsCount\": 8\n            },\n            {\n                \"id\": \"695b89fe6d823b423a70e81c\",\n                \"label\": \"Music\",\n                \"icon\": \"\",\n                \"banner\": \"\",\n                \"tagline\": \"\",\n                \"description\": \"\",\n                \"followersCount\": 15200,\n                \"activeContestantsCount\": 20\n            },\n            {\n                \"id\": \"695b89e66d823b423a70e819\",\n                \"label\": \"Dance\",\n                \"icon\": \"\",\n                \"banner\": \"\",\n                \"tagline\": \"\",\n                \"description\": \"\",\n                \"followersCount\": 18900,\n                \"activeContestantsCount\": 25\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tranding",
+      "item": [
+        {
+          "name": "Get Tranding (My Competitions)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/competitions?page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "competitions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Tranding",
+              "originalRequest": {
+                "method": "GET",
+                "header": []
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": [\n        {\n            \"isDeleted\": false,\n            \"_id\": \"695e50dec362d05f363af91c\",\n            \"title\": \"Street Dance Battle – Updated\",\n            \"description\": \"Open city-level dance competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 100,\n            \"prizePool\": 7000,\n            \"startDate\": \"2026-01-20T00:00:00.000Z\",\n            \"endDate\": \"2026-01-25T00:00:00.000Z\",\n            \"status\": \"CREATED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-07T12:26:06.147Z\",\n            \"updatedAt\": \"2026-01-07T12:30:21.592Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"696002e12c3d259129dfac83\",\n            \"title\": \"Dance Battle\",\n            \"description\": \"City level competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 50,\n            \"prizePool\": 5000,\n            \"startDate\": \"2026-02-01T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"APPROVED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-08T19:17:53.772Z\",\n            \"updatedAt\": \"2026-01-08T19:23:53.874Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"69600f8d2c3d259129dfac88\",\n            \"title\": \"Dance Battle 2\",\n            \"description\": \"City level competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 50,\n            \"prizePool\": 7000,\n            \"startDate\": \"2026-02-01T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"CANCELLED\",\n            \"participants\": [],\n            \"isActive\": false,\n            \"isDeleted\": true,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-08T20:11:57.571Z\",\n            \"updatedAt\": \"2026-01-08T20:14:41.530Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"696012b92c3d259129dfac94\",\n            \"title\": \"Dance Battle 3\",\n            \"description\": \"City level competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 50,\n            \"prizePool\": 5000,\n            \"startDate\": \"2026-02-01T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"APPROVED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-08T20:25:29.287Z\",\n            \"updatedAt\": \"2026-01-08T20:25:45.630Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6960149d1cc9015db35d4a70\",\n            \"title\": \"Dance Battle 4\",\n            \"description\": \"City level competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 50,\n            \"prizePool\": 5000,\n            \"startDate\": \"2026-02-01T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"COMPLETED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [\n                {\n                    \"userId\": \"6956a2a4f61b3a1bdb8faf99\",\n                    \"rank\": 1,\n                    \"prize\": 3000,\n                    \"_id\": \"696014c91cc9015db35d4a74\"\n                },\n                {\n                    \"userId\": \"6956a2a4f61b3a1bdb8faf88\",\n                    \"rank\": 2,\n                    \"prize\": 2000,\n                    \"_id\": \"696014c91cc9015db35d4a75\"\n                }\n            ],\n            \"createdAt\": \"2026-01-08T20:33:33.797Z\",\n            \"updatedAt\": \"2026-01-08T20:34:17.577Z\",\n            \"__v\": 1\n        },\n        {\n            \"_id\": \"6960bd9124ca96d73e13f0d5\",\n            \"title\": \"Dance Battle 4\",\n            \"description\": \"City level competition\",\n            \"sponsorId\": {\n                \"_id\": \"6956a295f61b3a1bdb8faf51\",\n                \"email\": \"admin@gullyfame.com\"\n            },\n            \"entryFee\": 50,\n            \"prizePool\": 5000,\n            \"startDate\": \"2026-02-01T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"CREATED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-09T08:34:25.828Z\",\n            \"updatedAt\": \"2026-01-09T08:34:25.828Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"696602746b15f9f3974aa818\",\n            \"title\": \"Delhi Dance 2026\",\n            \"description\": \"This is a Dance Competition\",\n            \"entryFee\": 0,\n            \"prizePool\": 0,\n            \"startDate\": \"2026-02-25T00:00:00.000Z\",\n            \"endDate\": \"2026-02-27T00:00:00.000Z\",\n            \"status\": \"APPROVED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-13T08:29:40.658Z\",\n            \"updatedAt\": \"2026-01-13T08:32:27.423Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"696603796b15f9f3974aa87b\",\n            \"title\": \"Music-Battle-2026\",\n            \"description\": \"Music Competition\",\n            \"entryFee\": 100,\n            \"prizePool\": 3000,\n            \"startDate\": \"2026-02-02T00:00:00.000Z\",\n            \"endDate\": \"2026-02-05T00:00:00.000Z\",\n            \"status\": \"live\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-13T08:34:01.726Z\",\n            \"updatedAt\": \"2026-01-13T09:33:40.048Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6966216c6b15f9f3974aaa08\",\n            \"title\": \"Delhi Dance 2026\",\n            \"description\": \"The is Dance Competition\",\n            \"sponsorId\": {\n                \"_id\": \"6966199d6b15f9f3974aa933\",\n                \"email\": \"avijangid7011@gmail.com\",\n                \"sponsorCode\": \"SP1768298909270\"\n            },\n            \"entryFee\": 400,\n            \"prizePool\": 2000,\n            \"startDate\": \"2026-01-10T00:00:00.000Z\",\n            \"endDate\": \"2026-01-20T00:00:00.000Z\",\n            \"status\": \"APPROVED\",\n            \"participants\": [],\n            \"isActive\": true,\n            \"isDeleted\": false,\n            \"winners\": [],\n            \"createdAt\": \"2026-01-13T10:41:48.425Z\",\n            \"updatedAt\": \"2026-01-13T10:42:40.094Z\",\n            \"__v\": 0\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Champions",
+      "item": [
+        {
+          "name": "Champions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}user/champaigns?page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}user"
+              ],
+              "path": [
+                "champaigns"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Champions",
+              "originalRequest": {
+                "method": "GET",
+                "header": []
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": [\n        {\n            \"_id\": \"6970b9ba0a9b4205c65ab6c9\",\n            \"firstName\": \"abhi\",\n            \"lastName\": \"last\",\n            \"email\": \"abhitest@gmail.com\",\n            \"profileImage\": \"\",\n            \"mobile\": \"7531456985\",\n            \"walletBalance\": 10\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Notifications - Today",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}notification/notification?time=1&page=1&limit=10",
+              "host": [
+                "{{BASE_URL}}notification"
+              ],
+              "path": [
+                "notification"
+              ],
+              "query": [
+                {
+                  "key": "time",
+                  "value": "1",
+                  "description": "1 = Today's notifications, 2 = Past notifications"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Notifications - Today",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}notification/notification?time=1&page=1&limit=10",
+                  "host": [
+                    "{{BASE_URL}}notification"
+                  ],
+                  "path": [
+                    "notification"
+                  ],
+                  "query": [
+                    {
+                      "key": "time",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 10,\n        \"time\": 1,\n        \"totalNotifications\": 2,\n        \"unreadCount\": 2,\n        \"notifications\": [\n            {\n                \"_id\": \"6970bfa8e29bdbdba2b08443\",\n                \"title\": \"Rank Boost!\",\n                \"description\": \"You moved up 3 ranks today\",\n                \"status\": \"unRead\",\n                \"createdAt\": \"2026-03-07T11:59:36.890Z\"\n            },\n            {\n                \"_id\": \"6970c00107a98d5cd5389433\",\n                \"title\": \"New Competition!\",\n                \"description\": \"Hip-Hop Championship 2026 is now live\",\n                \"status\": \"unRead\",\n                \"createdAt\": \"2026-03-07T12:01:05.119Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Notifications - Past",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}notification/notification?time=2&page=1&limit=10",
+              "host": [
+                "{{BASE_URL}}notification"
+              ],
+              "path": [
+                "notification"
+              ],
+              "query": [
+                {
+                  "key": "time",
+                  "value": "2",
+                  "description": "1 = Today's notifications, 2 = Past notifications"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Notifications - Past",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}notification/notification?time=2&page=1&limit=10",
+                  "host": [
+                    "{{BASE_URL}}notification"
+                  ],
+                  "path": [
+                    "notification"
+                  ],
+                  "query": [
+                    {
+                      "key": "time",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 10,\n        \"time\": 2,\n        \"totalNotifications\": 15,\n        \"unreadCount\": 0,\n        \"notifications\": [\n            {\n                \"_id\": \"notif_past_001\",\n                \"title\": \"Competition Ended\",\n                \"description\": \"Cooking Wars has ended. Check results!\",\n                \"status\": \"read\",\n                \"createdAt\": \"2026-03-05T09:00:00.000Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chats",
+      "item": [
+        {
+          "name": "sendChat",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"receiver_id\": \"692981224451c1fe436ea352\",\n    \"message\": \"hello abhi\",\n    \"reply_to\": \"\",\n    \"is_forwarded\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}chat/sendChat",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "sendChat"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Chat List",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}chat/chatlist",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "chatlist"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Chat List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}chat/chatlist",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "chatlist"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"chatlist\": [\n            {\n                \"chatter_user_id\": \"692981224451c1fe436ea352\",\n                \"latest_message\": \"hello abhi\",\n                \"last_message_time\": \"2026-01-22T09:19:45.030Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Chat Details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}chat/chatDetails?chatterId=692981224451c1fe436ea352&page=1&limit=10",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "chatDetails"
+              ],
+              "query": [
+                {
+                  "key": "chatterId",
+                  "value": "692981224451c1fe436ea352"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Chat Details",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}chat/chatDetails?chatterId=692981224451c1fe436ea352&page=1&limit=10",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "chatDetails"
+                  ],
+                  "query": [
+                    {
+                      "key": "chatterId",
+                      "value": "692981224451c1fe436ea352"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"totalMessageCount\": 1,\n        \"limit\": 10,\n        \"messages\": [\n            {\n                \"_id\": \"6971ebb1135da8ca6761a749\",\n                \"sender_id\": \"6970b9ba0a9b4205c65ab6c9\",\n                \"receiver_id\": \"692981224451c1fe436ea352\",\n                \"message\": \"hello abhi\",\n                \"createdAt\": \"2026-01-22T09:19:45.030Z\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Toggle React",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"emoji\": \"👍\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}chat/message/{{MESSAGE_ID}}/react",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "message",
+                "{{MESSAGE_ID}}",
+                "react"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Toggle React - Add",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"emoji\": \"👍\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}chat/message/6971ebb1135da8ca6761a749/react",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "message",
+                    "6971ebb1135da8ca6761a749",
+                    "react"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"_id\": \"6971ebb1135da8ca6761a749\",\n        \"reactions\": [\n            {\n                \"user_id\": \"6970b9ba0a9b4205c65ab6c9\",\n                \"emoji\": \"👍\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message_ids\": [\n        \"6971ebb1135da8ca6761a749\"\n    ],\n    \"delete_type\": \"for_me\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}chat/message/delete",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "message",
+                "delete"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete for me",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"message_ids\": [\n        \"6971ebb1135da8ca6761a749\"\n    ],\n    \"delete_type\": \"for_me\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}chat/message/delete",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "message",
+                    "delete"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"Messages deleted successfully\",\n    \"data\": {}\n}"
+            },
+            {
+              "name": "Delete for everyone",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"message_ids\": [\n        \"6971ebb1135da8ca6761a749\"\n    ],\n    \"delete_type\": \"for_everyone\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}chat/message/delete",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "message",
+                    "delete"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"Messages deleted successfully\",\n    \"data\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Mark as Read",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sender_id\": \"692981224451c1fe436ea352\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}chat/read",
+              "host": [
+                "{{BASE_URL}}chat"
+              ],
+              "path": [
+                "read"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Mark as Read",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"sender_id\": \"692981224451c1fe436ea352\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}chat/read",
+                  "host": [
+                    "{{BASE_URL}}chat"
+                  ],
+                  "path": [
+                    "read"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"Messages marked as read\",\n    \"data\": {\n        \"modifiedCount\": 3\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Competitions",
+      "item": [
+        {
+          "name": "Competition Details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}competitions/{{COMPETITION_ID}}",
+              "host": [
+                "{{BASE_URL}}competitions"
+              ],
+              "path": [
+                "{{COMPETITION_ID}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "LIVE Competition",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}competitions/695e50dec362d05f363af91c",
+                  "host": [
+                    "{{BASE_URL}}competitions"
+                  ],
+                  "path": [
+                    "695e50dec362d05f363af91c"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"_id\": \"695e50dec362d05f363af91c\",\n        \"title\": \"Street Dance Battle\",\n        \"subtitle\": \"Open city-level dance competition\",\n        \"description\": \"Show your best moves\",\n        \"status\": \"LIVE\",\n        \"prizePool\": 7000,\n        \"entryFee\": 100,\n        \"startDate\": \"2026-01-20T00:00:00.000Z\",\n        \"endDate\": \"2026-01-25T00:00:00.000Z\",\n        \"image\": \"/images/competitions/dance.png\",\n        \"totalViews\": 5200,\n        \"participantsCount\": 45,\n        \"leaderboard\": [\n            {\n                \"rank\": 1,\n                \"user\": {\n                    \"_id\": \"u1\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\"\n                },\n                \"reel\": {\n                    \"_id\": \"r1\",\n                    \"thumbnail_url\": \"/thumb1.jpg\",\n                    \"stats\": {\n                        \"votes\": 450\n                    }\n                }\n            },\n            {\n                \"rank\": 2,\n                \"user\": {\n                    \"_id\": \"u2\",\n                    \"firstName\": \"Meghan\",\n                    \"lastName\": \"Joseph\",\n                    \"profileImage\": \"\"\n                },\n                \"reel\": {\n                    \"_id\": \"r2\",\n                    \"thumbnail_url\": \"/thumb2.jpg\",\n                    \"stats\": {\n                        \"votes\": 380\n                    }\n                }\n            }\n        ]\n    }\n}"
+            },
+            {
+              "name": "UPCOMING Competition",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}competitions/696002e12c3d259129dfac83",
+                  "host": [
+                    "{{BASE_URL}}competitions"
+                  ],
+                  "path": [
+                    "696002e12c3d259129dfac83"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"_id\": \"696002e12c3d259129dfac83\",\n        \"title\": \"Dance Battle\",\n        \"subtitle\": \"City level competition\",\n        \"description\": \"City level competition\",\n        \"status\": \"UPCOMING\",\n        \"prizePool\": 5000,\n        \"entryFee\": 50,\n        \"startDate\": \"2026-02-01T00:00:00.000Z\",\n        \"endDate\": \"2026-02-05T00:00:00.000Z\",\n        \"image\": \"\",\n        \"totalViews\": 0,\n        \"participantsCount\": 12,\n        \"participants\": [\n            {\n                \"_id\": \"u1\",\n                \"firstName\": \"Test\",\n                \"lastName\": \"User\",\n                \"profileImage\": \"\"\n            }\n        ]\n    }\n}"
+            },
+            {
+              "name": "ENDED Competition",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}competitions/6960149d1cc9015db35d4a70",
+                  "host": [
+                    "{{BASE_URL}}competitions"
+                  ],
+                  "path": [
+                    "6960149d1cc9015db35d4a70"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"_id\": \"6960149d1cc9015db35d4a70\",\n        \"title\": \"Dance Battle 4\",\n        \"subtitle\": \"City level competition\",\n        \"description\": \"City level competition\",\n        \"status\": \"ENDED\",\n        \"prizePool\": 5000,\n        \"entryFee\": 50,\n        \"startDate\": \"2026-02-01T00:00:00.000Z\",\n        \"endDate\": \"2026-02-05T00:00:00.000Z\",\n        \"image\": \"\",\n        \"totalViews\": 89000,\n        \"results\": [\n            {\n                \"rank\": 1,\n                \"user\": {\n                    \"_id\": \"u1\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\"\n                },\n                \"reel\": {\n                    \"_id\": \"r1\",\n                    \"thumbnail_url\": \"/thumb1.jpg\",\n                    \"stats\": {\n                        \"votes\": 900\n                    }\n                }\n            }\n        ],\n        \"recommendedPast\": [\n            {\n                \"_id\": \"comp2\",\n                \"title\": \"Cooking Wars Finale\",\n                \"image\": \"/past.jpg\",\n                \"totalViews\": 55000\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Competition Leaderboard",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}competitions/{{COMPETITION_ID}}/leaderboard?page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}competitions"
+              ],
+              "path": [
+                "{{COMPETITION_ID}}",
+                "leaderboard"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Leaderboard",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}competitions/695e50dec362d05f363af91c/leaderboard?page=1&limit=20",
+                  "host": [
+                    "{{BASE_URL}}competitions"
+                  ],
+                  "path": [
+                    "695e50dec362d05f363af91c",
+                    "leaderboard"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 45,\n        \"leaderboard\": [\n            {\n                \"rank\": 1,\n                \"user\": {\n                    \"_id\": \"u1\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\",\n                    \"is_followed_by_me\": false\n                },\n                \"reel\": {\n                    \"_id\": \"r1\",\n                    \"thumbnail_url\": \"/thumb1.jpg\",\n                    \"stats\": {\n                        \"votes\": 450,\n                        \"likes\": 120\n                    }\n                }\n            },\n            {\n                \"rank\": 2,\n                \"user\": {\n                    \"_id\": \"u2\",\n                    \"firstName\": \"Meghan\",\n                    \"lastName\": \"Joseph\",\n                    \"profileImage\": \"\",\n                    \"is_followed_by_me\": true\n                },\n                \"reel\": {\n                    \"_id\": \"r2\",\n                    \"thumbnail_url\": \"/thumb2.jpg\",\n                    \"stats\": {\n                        \"votes\": 380,\n                        \"likes\": 95\n                    }\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Competition Reels",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}competitions/{{COMPETITION_ID}}/reels?limit=10",
+              "host": [
+                "{{BASE_URL}}competitions"
+              ],
+              "path": [
+                "{{COMPETITION_ID}}",
+                "reels"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "description": "Last reel _id for cursor pagination (optional)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Competition Reels",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}competitions/695e50dec362d05f363af91c/reels?limit=10",
+                  "host": [
+                    "{{BASE_URL}}competitions"
+                  ],
+                  "path": [
+                    "695e50dec362d05f363af91c",
+                    "reels"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"reels\": [\n            {\n                \"_id\": \"reel_001\",\n                \"video_url\": \"/videos/reel1.mp4\",\n                \"thumbnail_url\": \"/thumbs/reel1.jpg\",\n                \"caption\": \"My dance entry!\",\n                \"author\": {\n                    \"_id\": \"u1\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\",\n                    \"is_followed_by_me\": false\n                },\n                \"music\": {\n                    \"id\": \"m1\",\n                    \"name\": \"Beat Drop\"\n                },\n                \"stats\": {\n                    \"votes\": 450,\n                    \"likes\": 120,\n                    \"comments\": 30,\n                    \"shares\": 15,\n                    \"saves\": 8,\n                    \"tips\": 5\n                },\n                \"user_interactions\": {\n                    \"voted\": true,\n                    \"liked\": false,\n                    \"saved\": false\n                },\n                \"createdAt\": \"2026-01-21T10:00:00.000Z\"\n            }\n        ],\n        \"next_cursor\": \"reel_001\",\n        \"has_more\": true\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Feed Matrix",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}feed/matrix?page=1&limit=5",
+              "host": [
+                "{{BASE_URL}}feed"
+              ],
+              "path": [
+                "matrix"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Feed Matrix",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}feed/matrix?page=1&limit=5",
+                  "host": [
+                    "{{BASE_URL}}feed"
+                  ],
+                  "path": [
+                    "matrix"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 5,\n        \"total\": 3,\n        \"competitions\": [\n            {\n                \"_id\": \"695e50dec362d05f363af91c\",\n                \"title\": \"Street Dance Battle\",\n                \"status\": \"LIVE\",\n                \"seedReels\": [\n                    {\n                        \"_id\": \"reel_001\",\n                        \"video_url\": \"/videos/reel1.mp4\",\n                        \"thumbnail_url\": \"/thumbs/reel1.jpg\",\n                        \"caption\": \"My dance entry!\",\n                        \"author\": {\n                            \"_id\": \"u1\",\n                            \"firstName\": \"Bryan\",\n                            \"lastName\": \"Wolf\",\n                            \"profileImage\": \"\",\n                            \"is_followed_by_me\": false\n                        },\n                        \"stats\": {\n                            \"votes\": 450,\n                            \"likes\": 120,\n                            \"comments\": 30,\n                            \"shares\": 15,\n                            \"saves\": 8,\n                            \"tips\": 5\n                        },\n                        \"user_interactions\": {\n                            \"voted\": true,\n                            \"liked\": false,\n                            \"saved\": false\n                        }\n                    }\n                ]\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reels",
+      "item": [
+        {
+          "name": "List Reels",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}reels?limit=10",
+              "host": [
+                "{{BASE_URL}}reels"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "cursor",
+                  "value": "",
+                  "disabled": true,
+                  "description": "Pass last reel _id from previous page to fetch the next page"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Action",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action_type\": \"vote\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}reels/{{REEL_ID}}/action",
+              "host": [
+                "{{BASE_URL}}reels"
+              ],
+              "path": [
+                "{{REEL_ID}}",
+                "action"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Vote",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action_type\": \"vote\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}reels/reel_001/action",
+                  "host": [
+                    "{{BASE_URL}}reels"
+                  ],
+                  "path": [
+                    "reel_001",
+                    "action"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"action\": \"vote\",\n        \"toggled\": true,\n        \"stats\": {\n            \"votes\": 451,\n            \"likes\": 120,\n            \"saves\": 8\n        }\n    }\n}"
+            },
+            {
+              "name": "Like",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action_type\": \"like\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}reels/reel_001/action",
+                  "host": [
+                    "{{BASE_URL}}reels"
+                  ],
+                  "path": [
+                    "reel_001",
+                    "action"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"action\": \"like\",\n        \"toggled\": true,\n        \"stats\": {\n            \"votes\": 451,\n            \"likes\": 121,\n            \"saves\": 8\n        }\n    }\n}"
+            },
+            {
+              "name": "Save",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"action_type\": \"save\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}reels/reel_001/action",
+                  "host": [
+                    "{{BASE_URL}}reels"
+                  ],
+                  "path": [
+                    "reel_001",
+                    "action"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"action\": \"save\",\n        \"toggled\": true,\n        \"stats\": {\n            \"votes\": 451,\n            \"likes\": 121,\n            \"saves\": 9\n        }\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Search All",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}search?q=dance&type=all",
+              "host": [
+                "{{BASE_URL}}search"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "dance"
+                },
+                {
+                  "key": "type",
+                  "value": "all",
+                  "description": "all | users | competitions | reels"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Search All",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}search?q=dance&type=all&page=1&limit=20",
+                  "host": [
+                    "{{BASE_URL}}search"
+                  ],
+                  "path": [],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "dance"
+                    },
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"users\": [\n            {\n                \"_id\": \"u1\",\n                \"firstName\": \"Dance\",\n                \"lastName\": \"King\",\n                \"profileImage\": \"\",\n                \"is_followed_by_me\": false\n            }\n        ],\n        \"competitions\": [\n            {\n                \"_id\": \"c1\",\n                \"title\": \"Street Dance Battle\",\n                \"status\": \"LIVE\",\n                \"image\": \"/comp.jpg\",\n                \"participantsCount\": 45\n            }\n        ],\n        \"reels\": [\n            {\n                \"_id\": \"r1\",\n                \"video_url\": \"/vid.mp4\",\n                \"thumbnail_url\": \"/thumb.jpg\",\n                \"caption\": \"Dance moves\",\n                \"author\": {\n                    \"_id\": \"u2\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\",\n                    \"is_followed_by_me\": true\n                },\n                \"stats\": {\n                    \"votes\": 450,\n                    \"likes\": 120\n                },\n                \"user_interactions\": {\n                    \"voted\": false,\n                    \"liked\": true,\n                    \"saved\": false\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}search?q=bryan&type=users&page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}search"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "bryan"
+                },
+                {
+                  "key": "type",
+                  "value": "users"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Search Users",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}search?q=bryan&type=users&page=1&limit=20",
+                  "host": [
+                    "{{BASE_URL}}search"
+                  ],
+                  "path": [],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "bryan"
+                    },
+                    {
+                      "key": "type",
+                      "value": "users"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 1,\n        \"users\": [\n            {\n                \"_id\": \"u1\",\n                \"firstName\": \"Bryan\",\n                \"lastName\": \"Wolf\",\n                \"username\": \"bryanwolf\",\n                \"profileImage\": \"\",\n                \"is_followed_by_me\": false\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Competitions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}search?q=dance&type=competitions&page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}search"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "dance"
+                },
+                {
+                  "key": "type",
+                  "value": "competitions"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Search Competitions",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}search?q=dance&type=competitions&page=1&limit=20",
+                  "host": [
+                    "{{BASE_URL}}search"
+                  ],
+                  "path": [],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "dance"
+                    },
+                    {
+                      "key": "type",
+                      "value": "competitions"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 3,\n        \"competitions\": [\n            {\n                \"_id\": \"c1\",\n                \"title\": \"Street Dance Battle\",\n                \"status\": \"LIVE\",\n                \"image\": \"/comp.jpg\",\n                \"participantsCount\": 45,\n                \"prizePool\": 7000\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Search Reels",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}search?q=dance&type=reels&page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}search"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "dance"
+                },
+                {
+                  "key": "type",
+                  "value": "reels"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Search Reels",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}search?q=dance&type=reels&page=1&limit=20",
+                  "host": [
+                    "{{BASE_URL}}search"
+                  ],
+                  "path": [],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "dance"
+                    },
+                    {
+                      "key": "type",
+                      "value": "reels"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": {\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 5,\n        \"reels\": [\n            {\n                \"_id\": \"r1\",\n                \"video_url\": \"/vid.mp4\",\n                \"thumbnail_url\": \"/thumb.jpg\",\n                \"caption\": \"My best dance\",\n                \"author\": {\n                    \"_id\": \"u1\",\n                    \"firstName\": \"Bryan\",\n                    \"lastName\": \"Wolf\",\n                    \"profileImage\": \"\",\n                    \"is_followed_by_me\": false\n                },\n                \"stats\": {\n                    \"votes\": 450,\n                    \"likes\": 120,\n                    \"comments\": 30,\n                    \"shares\": 15,\n                    \"saves\": 8,\n                    \"tips\": 5\n                },\n                \"user_interactions\": {\n                    \"voted\": true,\n                    \"liked\": false,\n                    \"saved\": false\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:3552/v1/api/",
+      "type": "string"
+    },
+    {
+      "key": "USER_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "COMPETITION_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "REEL_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "MESSAGE_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

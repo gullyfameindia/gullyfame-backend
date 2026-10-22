@@ -1,0 +1,182 @@
+{
+  "info": {
+    "_postman_id": "9c56d065-ae08-4d7e-ad33-a209747dd92e",
+    "name": "Public Apis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50068732",
+    "_collection_link": "https://go.postman.co/collection/50068732-9c56d065-ae08-4d7e-ad33-a209747dd92e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Logos",
+      "item": [
+        {
+          "name": "Logo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}public/logo",
+              "host": [
+                "{{BASE_URL}}public"
+              ],
+              "path": [
+                "logo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Logo",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}public/logo",
+                  "host": [
+                    "{{BASE_URL}}public"
+                  ],
+                  "path": [
+                    "logo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "121"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"79-rqvyiWpQdrbimIwakc3OBJwOcd4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 30 Nov 2025 15:19:46 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": \"https://bank-ster-dev.s3.ap-south-1.amazonaws.com/1764514296189_Group%2079904.svg\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Splash Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}public/splash",
+              "host": [
+                "{{BASE_URL}}public"
+              ],
+              "path": [
+                "splash"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Splash Logs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE_URL}}public/splash",
+                  "host": [
+                    "{{BASE_URL}}public"
+                  ],
+                  "path": [
+                    "splash"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "368"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"170-+KmSBdoA4EozX9fxDbc/HaMD0AE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 01 Dec 2025 00:54:08 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 1,\n    \"message\": \"success\",\n    \"data\": [\n        \"https://bank-ster-dev.s3.ap-south-1.amazonaws.com/1764550424275_Happy%20Diwali%20%284%29%201.png\",\n        \"https://bank-ster-dev.s3.ap-south-1.amazonaws.com/1764550428200_Gemini_Generated_Image_rd9ghdrd9ghdrd9g%201.png\",\n        \"https://bank-ster-dev.s3.ap-south-1.amazonaws.com/1764550432764_Gemini_Generated_Image_1pu8on1pu8on1pu8%201-1.png\"\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CMS",
+      "item": [
+        {
+          "name": "Term and Conditions",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:3552/v1/api/",
+      "type": "string"
+    }
+  ]
+}

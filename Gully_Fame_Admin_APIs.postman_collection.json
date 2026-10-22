@@ -1,0 +1,691 @@
+{
+  "info": {
+    "name": "Gully Fame Admin APIs",
+    "description": "Complete API collection for Gully Fame Admin Panel\n\nBase URL: http://localhost:3552/v1/api\n\nFeatures:\n- Admin Authentication\n- App Branding (Logo & Splash Screen)\n- Home Banners Management\n- Categories Management\n- Static Content Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var jsonData = pm.response.json();",
+                  "  if (jsonData.rCode === 1) {",
+                  "    pm.environment.set('token', jsonData.rData.token);",
+                  "    pm.test('Admin login successful', function () {",
+                  "      pm.expect(jsonData.msg).to.eql('login_success');",
+                  "    });",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@gullyfame.com\",\n  \"password\": \"admin123\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/admin/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "admin", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "App Branding",
+      "item": [
+        {
+          "name": "Get App Branding",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/branding",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "branding"]
+            }
+          }
+        },
+        {
+          "name": "Update App Branding (Logo)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "splashTitle",
+                  "value": "Welcome to Gully Fame",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/branding",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "branding"]
+            }
+          }
+        },
+        {
+          "name": "Update App Branding (Splash Screen)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "splashImage",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "splashTitle",
+                  "value": "Welcome to Gully Fame",
+                  "type": "text"
+                },
+                {
+                  "key": "splashSubtitle",
+                  "value": "Showcase your talent and compete with the best!",
+                  "type": "text"
+                },
+                {
+                  "key": "splashButtonText",
+                  "value": "Get Started",
+                  "type": "text"
+                },
+                {
+                  "key": "showOverlay",
+                  "value": "true",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/branding",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "branding"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "item": [
+        {
+          "name": "Create Banner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Banner 1",
+                  "type": "text"
+                },
+                {
+                  "key": "rank",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "mobileView",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "ipadView",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "desktopView",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "startDate",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "expireDate",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/banners",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "banners"]
+            }
+          }
+        },
+        {
+          "name": "List Banners",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/banners",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "banners"]
+            }
+          }
+        },
+        {
+          "name": "Update Banner",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Banner 1",
+                  "type": "text"
+                },
+                {
+                  "key": "rank",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "mobileView",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                },
+                {
+                  "key": "ipadView",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                },
+                {
+                  "key": "desktopView",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/banners/{{banner_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "banners", "{{banner_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Banner",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/banners/{{banner_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "banners", "{{banner_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category - Dance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dance\",\n  \"icon\": \"🕺\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category - Music",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Music\",\n  \"icon\": \"🎵\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category - Comedy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Comedy\",\n  \"icon\": \"😂\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category - Cooking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cooking\",\n  \"icon\": \"👨‍🍳\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "List Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var jsonData = pm.response.json();",
+                  "  if (jsonData.rData && jsonData.rData.length > 0) {",
+                  "    pm.environment.set('category_id', jsonData.rData[0]._id);",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Toggle Category Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories/{{category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories", "{{category_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/categories/{{category_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "categories", "{{category_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Static Content",
+      "item": [
+        {
+          "name": "Get Competition Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/content/COMPETITION_RULES",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content", "COMPETITION_RULES"]
+            }
+          }
+        },
+        {
+          "name": "Update Competition Rules",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"COMPETITION_RULES\",\n  \"content\": \"1. All participants must be 18 years or older.\\n2. Content must be original and not violate any copyright.\\n3. Participants must follow community guidelines.\\n4. Inappropriate content will result in disqualification.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/content",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content"]
+            }
+          }
+        },
+        {
+          "name": "Get Terms & Conditions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/content/TERMS",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content", "TERMS"]
+            }
+          }
+        },
+        {
+          "name": "Update Terms & Conditions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"TERMS\",\n  \"content\": \"By using Gully Fame, you agree to the following terms and conditions...\\n\\n1. User Responsibilities\\n2. Content Guidelines\\n3. Intellectual Property\\n4. Limitation of Liability\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/content",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content"]
+            }
+          }
+        },
+        {
+          "name": "Get Privacy Policy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/content/PRIVACY_POLICY",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content", "PRIVACY_POLICY"]
+            }
+          }
+        },
+        {
+          "name": "Update Privacy Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"PRIVACY_POLICY\",\n  \"content\": \"Privacy Policy\\n\\nWe are committed to protecting your privacy. This policy explains how we collect, use, and protect your personal information...\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/content",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content"]
+            }
+          }
+        },
+        {
+          "name": "Get About Us",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/content/ABOUT_US",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content", "ABOUT_US"]
+            }
+          }
+        },
+        {
+          "name": "Update About Us",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"ABOUT_US\",\n  \"content\": \"About Gully Fame\\n\\nGully Fame is a platform for discovering and celebrating talent from across the globe. We provide a space for creators to showcase their skills and connect with audiences worldwide.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/content",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "content"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set base URL if not already set",
+          "if (!pm.environment.get('base_url')) {",
+          "  pm.environment.set('base_url', 'http://localhost:3552/v1/api');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3552/v1/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "banner_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "category_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
