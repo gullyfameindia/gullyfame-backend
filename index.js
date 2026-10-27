@@ -41,7 +41,7 @@ app.use("/v1/api", require("./src/routes"));
 
 // Health route
 app.get("/", (req, res) => {
-  res.send("Hello from main");
+  res.send("Hello from gullyfame actual backend");
 });
 
 // 404 for any unmatched path — prevents silently returning 200 for mis-routed requests
