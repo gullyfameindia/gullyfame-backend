@@ -142,6 +142,41 @@ userRouter.post(
 );
 
 /**
+ * Followers / following lists — ?page=1&limit=20&search=
+ *   GET /user/followers            → my followers
+ *   GET /user/following            → who I follow
+ *   GET /user/:userId/followers    → another user's followers
+ *   GET /user/:userId/following    → who another user follows
+ */
+userRouter.get(
+  "/followers",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().followers),
+  ResponseMiddleware,
+);
+
+userRouter.get(
+  "/following",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().following),
+  ResponseMiddleware,
+);
+
+userRouter.get(
+  "/:userId/followers",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().followers),
+  ResponseMiddleware,
+);
+
+userRouter.get(
+  "/:userId/following",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().following),
+  ResponseMiddleware,
+);
+
+/**
  * Wallet — recharge goes through Razorpay:
  *   1. POST /wallet/recharge         → creates a Razorpay order
  *   2. App opens Razorpay Checkout with the returned keyId/orderId

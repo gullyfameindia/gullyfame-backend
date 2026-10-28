@@ -129,6 +129,7 @@ module.exports = (lang = "en") => {
     comment_deleted: "Comment deleted successfully",
     cannot_follow_self: "You cannot follow yourself",
     follow_toggled: "Follow status updated",
+    login_success: "Logged in successfully",
     wallet_recharged: "Wallet recharged successfully",
     ac_deactivated: "Your account has been deactivated, please contact support",
     otp_resent: "otp resent to your registered mobile number",

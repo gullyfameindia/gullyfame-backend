@@ -69,8 +69,9 @@ module.exports = () => {
     let user = await UserService().fetch(userId);
 
     if (user) {
+      const counts = await FollowService().getCounts(userId);
       req.msg = "success";
-      req.rData = user;
+      req.rData = { ...user.toObject(), ...counts };
     } else {
       req.rCode = 5;
       req.msg = "user_not_found";
@@ -150,7 +151,47 @@ module.exports = () => {
     next();
   };
 
+  /**
+   * Followers / following lists.
+   * Without :userId in the URL → the logged-in user's own lists.
+   */
+  const followers = async (req, res, next) => {
+    console.log("UserController => followers");
+    const { userId } = req.body;
+    const targetId = req.params.userId || userId;
+    const { page, limit, search } = req.query;
+
+    req.rData = await FollowService().getFollowers(
+      targetId,
+      userId,
+      page,
+      limit,
+      search,
+    );
+    req.msg = "success";
+    next();
+  };
+
+  const following = async (req, res, next) => {
+    console.log("UserController => following");
+    const { userId } = req.body;
+    const targetId = req.params.userId || userId;
+    const { page, limit, search } = req.query;
+
+    req.rData = await FollowService().getFollowing(
+      targetId,
+      userId,
+      page,
+      limit,
+      search,
+    );
+    req.msg = "success";
+    next();
+  };
+
   return {
+    followers,
+    following,
     /**
      * Auth
      */

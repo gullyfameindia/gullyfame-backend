@@ -9756,10 +9756,27 @@
 					"name": "Follow",
 					"item": [
 						{
-							"name": "Toggle Follow",
+							"name": "1. My Profile (check counts)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Profile shows followersCount\", () => pm.expect(d.followersCount).to.be.a(\"number\"));",
+											"pm.test(\"Profile shows followingCount\", () => pm.expect(d.followingCount).to.be.a(\"number\"));",
+											"pm.collectionVariables.set(\"MY_USER_ID\", d._id);",
+											"console.log(\"followers:\", d.followersCount, \"following:\", d.followingCount);"
+										]
+									}
+								}
+							],
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
+								"description": "Shows followersCount and followingCount. Also saves your id to MY_USER_ID.",
 								"auth": {
 									"type": "bearer",
 									"bearer": [
@@ -9771,19 +9788,455 @@
 									]
 								},
 								"url": {
-									"raw": "{{BASE_URL}}user/{{TARGET_USER_ID}}/follow",
+									"raw": "{{BASE_URL}}user/profile",
 									"host": [
 										"{{BASE_URL}}user"
 									],
 									"path": [
-										"{{TARGET_USER_ID}}",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2. Toggle Follow",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Returns following flag + count\", () => {",
+											"  pm.expect(d.following).to.be.a(\"boolean\");",
+											"  pm.expect(d.followersCount).to.be.a(\"number\");",
+											"});",
+											"console.log(d.following ? \"Now FOLLOWING\" : \"UNFOLLOWED\", \"- their followers:\", d.followersCount);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"description": "Set OTHER_USER_ID first. Run once to follow, again to unfollow.",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/{{OTHER_USER_ID}}/follow",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"{{OTHER_USER_ID}}",
+										"follow"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3. My Followers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Has pagination fields\", () => {",
+											"  pm.expect(d).to.have.property(\"total\");",
+											"  pm.expect(d).to.have.property(\"page\");",
+											"  pm.expect(d.users).to.be.an(\"array\");",
+											"});",
+											"pm.test(\"Each user has follow flags\", () => {",
+											"  d.users.forEach(u => {",
+											"    pm.expect(u).to.have.property(\"_id\");",
+											"    pm.expect(u).to.have.property(\"isFollowedByMe\");",
+											"  });",
+											"});",
+											"console.log(\"total:\", d.total, \"users:\", d.users.map(u => u.username || u.firstName));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/followers?page=1&limit=20",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"followers"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4. My Following",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Has pagination fields\", () => {",
+											"  pm.expect(d).to.have.property(\"total\");",
+											"  pm.expect(d).to.have.property(\"page\");",
+											"  pm.expect(d.users).to.be.an(\"array\");",
+											"});",
+											"pm.test(\"Each user has follow flags\", () => {",
+											"  d.users.forEach(u => {",
+											"    pm.expect(u).to.have.property(\"_id\");",
+											"    pm.expect(u).to.have.property(\"isFollowedByMe\");",
+											"  });",
+											"});",
+											"console.log(\"total:\", d.total, \"users:\", d.users.map(u => u.username || u.firstName));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "After step 2 (follow), OTHER_USER_ID should appear here.",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/following?page=1&limit=20",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"following"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5. Other User's Followers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Has pagination fields\", () => {",
+											"  pm.expect(d).to.have.property(\"total\");",
+											"  pm.expect(d).to.have.property(\"page\");",
+											"  pm.expect(d.users).to.be.an(\"array\");",
+											"});",
+											"pm.test(\"Each user has follow flags\", () => {",
+											"  d.users.forEach(u => {",
+											"    pm.expect(u).to.have.property(\"_id\");",
+											"    pm.expect(u).to.have.property(\"isFollowedByMe\");",
+											"  });",
+											"});",
+											"console.log(\"total:\", d.total, \"users:\", d.users.map(u => u.username || u.firstName));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "After step 2 (follow), you should appear here with isMe = true.",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/{{OTHER_USER_ID}}/followers?page=1&limit=20",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"{{OTHER_USER_ID}}",
+										"followers"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "6. Other User's Following",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Has pagination fields\", () => {",
+											"  pm.expect(d).to.have.property(\"total\");",
+											"  pm.expect(d).to.have.property(\"page\");",
+											"  pm.expect(d.users).to.be.an(\"array\");",
+											"});",
+											"pm.test(\"Each user has follow flags\", () => {",
+											"  d.users.forEach(u => {",
+											"    pm.expect(u).to.have.property(\"_id\");",
+											"    pm.expect(u).to.have.property(\"isFollowedByMe\");",
+											"  });",
+											"});",
+											"console.log(\"total:\", d.total, \"users:\", d.users.map(u => u.username || u.firstName));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/{{OTHER_USER_ID}}/following?page=1&limit=20",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"{{OTHER_USER_ID}}",
+										"following"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "7. Search My Following",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+											"const d = pm.response.json().data;",
+											"pm.test(\"Has pagination fields\", () => {",
+											"  pm.expect(d).to.have.property(\"total\");",
+											"  pm.expect(d).to.have.property(\"page\");",
+											"  pm.expect(d.users).to.be.an(\"array\");",
+											"});",
+											"pm.test(\"Each user has follow flags\", () => {",
+											"  d.users.forEach(u => {",
+											"    pm.expect(u).to.have.property(\"_id\");",
+											"    pm.expect(u).to.have.property(\"isFollowedByMe\");",
+											"  });",
+											"});",
+											"console.log(\"total:\", d.total, \"users:\", d.users.map(u => u.username || u.firstName));"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"description": "Filters by first name, last name or username.",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/following?search=a",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"following"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "8. Follow Self (should fail)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Rejected with 400\", () => pm.response.to.have.status(400));",
+											"console.log(pm.response.json().message);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"description": "Run step 1 first so MY_USER_ID is set.",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/{{MY_USER_ID}}/follow",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"{{MY_USER_ID}}",
+										"follow"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "9. Follow Invalid Id (should fail)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Rejected with 400\", () => pm.response.to.have.status(400));",
+											"console.log(pm.response.json().message);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"description": "",
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}user/abc123/follow",
+									"host": [
+										"{{BASE_URL}}user"
+									],
+									"path": [
+										"abc123",
 										"follow"
 									]
 								}
 							},
 							"response": []
 						}
-					]
+					],
+					"description": "Run in order: set USER_TOKEN and OTHER_USER_ID (another user's _id) in collection variables, then 1 → 9."
 				},
 				{
 					"name": "Gamification",
@@ -10406,6 +10859,10 @@
 			"key": "RESET_TOKEN",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "MY_USER_ID",
+			"value": ""
 		}
 	]
 }
