@@ -171,5 +171,11 @@ module.exports = (lang = "en") => {
       "ffmpeg is not installed on this server — server-side export is unavailable",
     to_user_id_required: "toUserId is required",
     cannot_invite_self: "You cannot invite yourself",
+    category_not_found: "Category not found",
+    category_status_changed: "Category status updated",
+    notification_settings_updated: "Notification settings updated",
+    profile_updated: "Profile updated successfully",
+    admin_not_found: "No admin account found with this email",
+    otp_sent_on_mail: "Password reset code sent to your email",
   };
 };

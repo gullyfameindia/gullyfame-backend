@@ -13,8 +13,11 @@ const FilterController = require("../controllers/FilterController");
 const StickerController = require("../controllers/StickerController");
 const SoundFxController = require("../controllers/SoundFxController");
 
+// Only a logged-in admin can create another admin. The first admin comes
+// from `node scripts/seed.js` (SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD in .env).
 adminRouter.post(
   "/register",
+  AuthMiddleware().verifyAdminToken,
   ErrorHandlerMiddleware(AdminController().register),
   ResponseMiddleware
 );
@@ -96,9 +99,28 @@ adminRouter.get(
   ResponseMiddleware
 );
 
+adminRouter.get(
+  "/categories/:id",
+  AuthMiddleware().verifyAdminToken,
+  AdminValidator().validateCategoryId,
+  ErrorHandlerMiddleware(CategoryController().getDetailForAdmin),
+  ResponseMiddleware
+);
+
 adminRouter.delete(
   "/categories/:id",
-  ErrorHandlerMiddleware(CategoryController().delete),
+  AuthMiddleware().verifyAdminToken,
+  AdminValidator().validateCategoryId,
+  ErrorHandlerMiddleware(CategoryController().deleteCategory),
+  ResponseMiddleware
+);
+
+// Body (optional): { "isActive": true | false } — omit to toggle
+adminRouter.patch(
+  "/categories/:id",
+  AuthMiddleware().verifyAdminToken,
+  AdminValidator().validateCategoryId,
+  ErrorHandlerMiddleware(CategoryController().activateDeactivateCategory),
   ResponseMiddleware
 );
 
@@ -147,49 +169,6 @@ adminRouter.patch(
   AuthMiddleware().verifyAdminToken,
   AdminValidator().validateBannerId,
   ErrorHandlerMiddleware(AdminController().activateDeactivateBanner),
-  ResponseMiddleware
-);
-
-/**
- * Category
- */
-
-adminRouter.post(
-  "/categories",
-  AuthMiddleware().verifyAdminToken,
-  AdminValidator().validateCategory,
-  ErrorHandlerMiddleware(CategoryController().addCategory),
-  ResponseMiddleware
-);
-
-adminRouter.get(
-  "/categories",
-  AuthMiddleware().verifyAdminToken,
-  ErrorHandlerMiddleware(CategoryController().getAllCategoryList),
-  ResponseMiddleware
-);
-
-adminRouter.get(
-  "/categories/:id",
-  AuthMiddleware().verifyAdminToken,
-  AdminValidator().validateCategoryId,
-  ErrorHandlerMiddleware(CategoryController().getDetailForAdmin),
-  ResponseMiddleware
-);
-
-adminRouter.delete(
-  "/categories/:id",
-  AuthMiddleware().verifyAdminToken,
-  AdminValidator().validateCategoryId,
-  ErrorHandlerMiddleware(CategoryController().deleteCategory),
-  ResponseMiddleware
-);
-
-adminRouter.patch(
-  "/categories/:id",
-  AuthMiddleware().verifyAdminToken,
-  AdminValidator().validateCategoryId,
-  ErrorHandlerMiddleware(CategoryController().activateDeactivateCategory),
   ResponseMiddleware
 );
 

@@ -62,13 +62,86 @@ module.exports = () => {
   };
 
   const deleteCategory = async (req, res, next) => {
+    console.log("CategoryController => deleteCategory");
     const { id } = req.params;
 
-    await CategoryService().deleteCategory(id);
+    const result = await CategoryService().deleteCategory(id);
+
+    if (!result || result.deletedCount === 0) {
+      req.rCode = 5;
+      req.msg = "category_not_found";
+      return next();
+    }
 
     req.msg = "category_deleted";
     next();
   };
 
-  return { create, list, userList, delete: deleteCategory };
+  /**
+   * Admin: single category with all fields (active or not).
+   */
+  const getDetailForAdmin = async (req, res, next) => {
+    console.log("CategoryController => getDetailForAdmin");
+    const { id } = req.params;
+
+    const category = await CategoryService().fetch(id);
+
+    if (!category) {
+      req.rCode = 5;
+      req.msg = "category_not_found";
+      return next();
+    }
+
+    req.rData = category;
+    req.msg = "success";
+    next();
+  };
+
+  /**
+   * Admin: activate / deactivate a category.
+   * Send { "isActive": true | false } to set it; with no body it toggles.
+   */
+  const activateDeactivateCategory = async (req, res, next) => {
+    console.log("CategoryController => activateDeactivateCategory");
+    const { id } = req.params;
+
+    const category = await CategoryService().fetch(id);
+
+    if (!category) {
+      req.rCode = 5;
+      req.msg = "category_not_found";
+      return next();
+    }
+
+    const wanted = req.body ? req.body.isActive : undefined;
+    let isActive;
+    if (wanted === true || wanted === "true" || wanted === 1 || wanted === "1") {
+      isActive = true;
+    } else if (
+      wanted === false ||
+      wanted === "false" ||
+      wanted === 0 ||
+      wanted === "0"
+    ) {
+      isActive = false;
+    } else {
+      isActive = !category.isActive;
+    }
+
+    await CategoryService().updateCategory(id, { isActive });
+
+    req.rData = { _id: category._id, isActive };
+    req.msg = "category_status_changed";
+    next();
+  };
+
+  return {
+    create,
+    list,
+    userList,
+    delete: deleteCategory,
+    deleteCategory,
+    getDetailForAdmin,
+    activateDeactivateCategory,
+  };
 };

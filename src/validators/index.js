@@ -60,8 +60,8 @@ module.exports = {
   validate: (v, res, next, req = null) => {
     console.log("ValidatorsIndex => validate");
 
-    if (
-      v.check().then(function (matched) {
+    v.check().then(
+      function (matched) {
         if (!matched) {
           req.rCode = 0;
           let message = helpers().getErrorMessage(v.errors);
@@ -70,7 +70,17 @@ module.exports = {
         } else {
           next();
         }
-      })
+      },
+      function (err) {
+        // A rule that throws (e.g. "exists" given a malformed id → CastError)
+        // used to leave this promise unhandled, which hangs the request and
+        // can crash the Node process. Answer with a 400 instead.
+        console.log("ValidatorsIndex => validate error", err && err.message);
+        req.rCode = 0;
+        const message =
+          err && err.name === "CastError" ? "Invalid id" : "Invalid request";
+        ResponseMiddleware(req, res, next, message);
+      },
     );
   },
 
@@ -99,6 +109,9 @@ module.exports = {
     },
     banner: {
       id: "required|string|exists:Banners,_id|maxLength:250",
+    },
+    category: {
+      id: "required|string|exists:Category,_id|maxLength:250",
     },
   },
 };

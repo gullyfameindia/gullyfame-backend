@@ -6,6 +6,7 @@ const RegexEscape = require("regex-escape");
 const SettingsService = require("../services/SettingsService");
 const FAQService = require("../services/FAQService");
 const helpers = require("../util/helpers");
+const AdminPasswordResetService = require("../services/AdminPasswordResetService");
 const fileUploadService = require("../util/s3");
 
 module.exports = () => {
@@ -184,42 +185,29 @@ module.exports = () => {
     next();
   };
 
-  const forgotPassword = async (req, res, next) => {
-    let { email } = req.body;
-
-    if (email) {
-      email = email.toLowerCase();
-    }
-
-    let email_query = {
-      email,
-    };
-
-    let user = await AdminService().fetchByQuery(email_query);
-
-    if (user) {
-      let otp = helpers().generateOTP();
-
-      await AdminService().updateProfile(user._id, { otp });
-      user = await AdminService().fetch(user._id);
-
+  // Admin "forgot password": email an OTP, verify it, then resetPassword with
+  // the returned token. Logic lives in AdminPasswordResetService.
+  const sendResetOtp = async (req, res, next) => {
+    try {
+      await AdminPasswordResetService().sendOtp(req.body.email);
       req.msg = "otp_sent_on_mail";
       req.rData = {};
-    } else {
+    } catch (ex) {
       req.rCode = 0;
-      req.msg = "admin_not_found";
+      req.msg = ex.message;
       req.rData = {};
     }
-
     next();
+  };
+
+  const forgotPassword = async (req, res, next) => {
+    console.log("AdminController => forgotPassword");
+    return sendResetOtp(req, res, next);
   };
 
   const verifyOtpForForgotPassword = async (req, res, next) => {
     console.log("AdminController => verifyOtpForForgotPassword");
-
     let { email, otp } = req.body;
-
-    // var verify = code == "1234" ? true : false;
 
     if (!email) {
       return res
@@ -227,74 +215,22 @@ module.exports = () => {
         .send({ code: 0, message: "email require!", data: {} });
     }
 
-    let otpUser = 1234;
-    email = email.toLowerCase();
-
-    var query = { email };
-    let user = null;
-    var msg = "admin_not_found";
-    let token = null;
-
-    email = email.toLowerCase();
-
-    var query = { email };
-
-    user = await AdminService().fetchByQuery(query);
-
-    if (user) {
-      token = await helpers().createJWT({ adminId: user._id, isAdmin: true });
-
-      otpUser = user.otp;
-    } else {
-      msg = "admin_not_found";
-    }
-
-    console.log("otpUser", otpUser, "\notp", otp);
-
-    console.log(otp == (1234 || otpUser));
-
-    var verify = otp == (1234 || otpUser) ? true : false;
-
-    if (user) {
-      if (verify) {
-        req.rData = { token, user };
-        req.msg = "otp_verified";
-      } else {
-        req.rCode = 0;
-        req.msg = "incorrect_otp";
-      }
-    } else {
+    try {
+      const { token, adminId } = await AdminPasswordResetService().verifyOtp(email, otp);
+      const user = await AdminService().fetch(adminId);
+      req.rData = { token, user };
+      req.msg = "otp_verified";
+    } catch (ex) {
       req.rCode = 0;
-      req.msg = msg;
+      req.msg = ex.message;
+      req.rData = {};
     }
     next();
   };
 
   const resendOtpForEmail = async (req, res, next) => {
     console.log("AdminController => resendOtpForEmail");
-    let { email } = req.body;
-
-    if (email) {
-      email = email.toLowerCase();
-    }
-
-    var query = { email };
-
-    let user = await AdminService().fetchByQuery(query);
-    req.msg = "admin_not_found";
-
-    if (user) {
-      let otp = helpers().generateOTP();
-
-      await AdminService().updateProfile(user._id, { otp });
-
-      req.rData = {};
-      req.msg = "otp_sent_on_mail";
-    } else {
-      req.rCode = 0;
-      req.msg = msg;
-    }
-    next();
+    return sendResetOtp(req, res, next);
   };
 
   const resetPassword = async (req, res, next) => {

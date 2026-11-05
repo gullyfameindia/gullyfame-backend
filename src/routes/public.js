@@ -7,6 +7,7 @@ const SoundFxController = require("../controllers/SoundFxController");
 const PublicContentController = require("../controllers/PublicContentController");
 const ErrorHandlerMiddleware = require("../middlewares/ErrorHandlerMiddleware");
 const ResponseMiddleware = require("../middlewares/ResponseMiddleware");
+const AuthMiddleware = require("../middlewares/AuthMiddleware");
 
 userRouter.get(
   "/logo",
@@ -14,8 +15,10 @@ userRouter.get(
   ResponseMiddleware
 );
 
+// Changing the app logo / splash is an admin action — reading them stays public.
 userRouter.post(
   "/logo",
+  AuthMiddleware().verifyAdminToken,
   ErrorHandlerMiddleware(LogoController().addLogo),
   ResponseMiddleware
 );
