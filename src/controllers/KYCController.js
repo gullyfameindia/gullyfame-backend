@@ -1,6 +1,20 @@
 const KYCService = require("../services/KYCService");
 const fileUploadService = require("../util/s3");
 
+// KYC documents live in the private kyc/ folder. The database stores the S3
+// key; every response swaps it for a short-lived signed link.
+const KYC_FOLDER = "kyc";
+
+const withSignedUrls = async (kyc) => {
+  if (!kyc) return kyc;
+  const data = typeof kyc.toObject === "function" ? kyc.toObject() : { ...kyc };
+  const [frontImage, backImage] = await Promise.all([
+    fileUploadService.getSignedReadUrl(data.frontImage),
+    fileUploadService.getSignedReadUrl(data.backImage),
+  ]);
+  return { ...data, frontImage, backImage };
+};
+
 module.exports = () => {
   const submitKYC = async (req, res, next) => {
     console.log("KYCController => submitKYC");
@@ -14,23 +28,25 @@ module.exports = () => {
 
     const frontUpload = await fileUploadService.uploadFileToAws(
       req.files.frontImage,
+      { folder: KYC_FOLDER },
     );
 
     let backImage = "";
     if (req.files.backImage) {
       const backUpload = await fileUploadService.uploadFileToAws(
         req.files.backImage,
+        { folder: KYC_FOLDER },
       );
-      backImage = backUpload.images[0];
+      backImage = backUpload.keys[0];
     }
 
     const kyc = await KYCService().upsertForUser(userId, {
       docType,
-      frontImage: frontUpload.images[0],
+      frontImage: frontUpload.keys[0],
       backImage,
     });
 
-    req.rData = kyc;
+    req.rData = await withSignedUrls(kyc);
     req.msg = "kyc_submitted";
     next();
   };
@@ -41,7 +57,7 @@ module.exports = () => {
 
     const kyc = await KYCService().fetchByUser(userId);
 
-    req.rData = kyc || {};
+    req.rData = kyc ? await withSignedUrls(kyc) : {};
     req.msg = "success";
     next();
   };
@@ -58,7 +74,7 @@ module.exports = () => {
       return next();
     }
 
-    req.rData = kyc;
+    req.rData = await withSignedUrls(kyc);
     req.msg = "success";
     next();
   };
@@ -82,7 +98,7 @@ module.exports = () => {
       return next();
     }
 
-    req.rData = kyc;
+    req.rData = await withSignedUrls(kyc);
     req.msg = "kyc_updated";
     next();
   };

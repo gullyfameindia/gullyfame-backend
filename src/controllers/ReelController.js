@@ -3,9 +3,13 @@ const ExportService = require("../services/ExportService");
 const fileUploadService = require("../util/s3");
 
 module.exports = () => {
-  // Editor uploads (clip, voice-over) all land in S3 under distinct folders
-  // so the client can request a presigned URL for whichever asset it's saving.
-  const ALLOWED_UPLOAD_FOLDERS = ["reels", "voiceovers"];
+  // Editor uploads (clip, voice-over) land in the public media/ area of S3,
+  // one folder per asset type. The client still sends assetType "reels" or
+  // "voiceovers"; anything else falls back to reels.
+  const UPLOAD_FOLDERS = {
+    reels: "media/reels",
+    voiceovers: "media/voiceovers",
+  };
 
   const getUploadUrl = async (req, res, next) => {
     console.log("ReelController => getUploadUrl");
@@ -17,9 +21,9 @@ module.exports = () => {
       return next();
     }
 
-    const folder = ALLOWED_UPLOAD_FOLDERS.includes(assetType)
-      ? assetType
-      : "reels";
+    const folder = Object.prototype.hasOwnProperty.call(UPLOAD_FOLDERS, assetType)
+      ? UPLOAD_FOLDERS[assetType]
+      : UPLOAD_FOLDERS.reels;
 
     const data = await fileUploadService.getPresignedUploadUrl({
       fileName,
