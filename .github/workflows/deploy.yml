@@ -22,8 +22,13 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          # The key is stored base64-encoded on one line, so copy-and-paste
+          # cannot break its line endings. Decode it back here.
+          printf '%s' "${{ secrets.DEPLOY_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          # Fail here, with a clear message, if the key did not survive.
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null \
+            || { echo "DEPLOY_SSH_KEY is not a valid private key"; exit 1; }
           printf '%s\n' "${{ secrets.DEPLOY_HOST_KEY }}" > ~/.ssh/deploy_known_hosts
           chmod 600 ~/.ssh/deploy_known_hosts
 
