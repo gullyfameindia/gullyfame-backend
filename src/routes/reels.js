@@ -29,6 +29,16 @@ reelRouter.post(
 );
 
 /**
+ * DELETE /reels/:reelId - Delete the caller's own reel (and its S3 files)
+ */
+reelRouter.delete(
+  "/:reelId",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(ReelController().deleteReel),
+  ResponseMiddleware,
+);
+
+/**
  * POST /reels/draft - Save/upsert the caller's in-progress draft reel
  * GET /reels/draft - Fetch the caller's current draft reel
  */

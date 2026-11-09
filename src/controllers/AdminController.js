@@ -7,9 +7,34 @@ const SettingsService = require("../services/SettingsService");
 const FAQService = require("../services/FAQService");
 const helpers = require("../util/helpers");
 const AdminPasswordResetService = require("../services/AdminPasswordResetService");
+const ReelService = require("../services/ReelService");
 const fileUploadService = require("../util/s3");
 
 module.exports = () => {
+  /**
+   * DELETE /admin/reels/:reelId - remove any reel.
+   * Optional body: { "reason": "why it was removed" } - stored on the record.
+   */
+  const deleteReel = async (req, res, next) => {
+    console.log("AdminController => deleteReel");
+    const { adminId, reason } = req.body;
+    const { reelId } = req.params;
+
+    try {
+      req.rData = await ReelService().deleteReel(reelId, adminId, {
+        byAdmin: true,
+        reason,
+      });
+      req.msg = "reel_deleted";
+    } catch (ex) {
+      req.rCode = 5;
+      req.msg = "reel_not_found";
+      req.rData = {};
+    }
+
+    next();
+  };
+
   const login = async (req, res, next) => {
     console.log("AdminController => login");
     let { email, password } = req.body;
@@ -734,6 +759,10 @@ module.exports = () => {
      */
     contactUs,
     getContactUs,
+    /**
+     * Reels
+     */
+    deleteReel,
     /**
      * FAQ
      */

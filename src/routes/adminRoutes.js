@@ -173,6 +173,18 @@ adminRouter.patch(
 );
 
 /**
+ * Reels
+ */
+
+// Optional body: { "reason": "..." }
+adminRouter.delete(
+  "/reels/:reelId",
+  AuthMiddleware().verifyAdminToken,
+  ErrorHandlerMiddleware(AdminController().deleteReel),
+  ResponseMiddleware
+);
+
+/**
  * Settings
  */
 

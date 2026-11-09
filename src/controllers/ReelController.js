@@ -114,6 +114,27 @@ module.exports = () => {
     next();
   };
 
+  /**
+   * DELETE /reels/:reelId - delete the caller's own reel.
+   * The reel disappears from the app and its files are removed from S3.
+   */
+  const deleteReel = async (req, res, next) => {
+    console.log("ReelController => deleteReel");
+    const { userId } = req.body;
+    const { reelId } = req.params;
+
+    try {
+      req.rData = await ReelService().deleteReel(reelId, userId, { byAdmin: false });
+      req.msg = "reel_deleted";
+    } catch (ex) {
+      req.rCode = ex.message === "forbidden" ? 4 : 5;
+      req.msg = ex.message === "forbidden" ? "not_your_reel" : "reel_not_found";
+      req.rData = {};
+    }
+
+    next();
+  };
+
   const getDraft = async (req, res, next) => {
     console.log("ReelController => getDraft");
     const { userId } = req.body;
@@ -164,6 +185,7 @@ module.exports = () => {
 
   return {
     getUploadUrl,
+    deleteReel,
     publish,
     saveDraft,
     getDraft,

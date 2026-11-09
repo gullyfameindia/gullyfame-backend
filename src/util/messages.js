@@ -174,6 +174,8 @@ module.exports = (lang = "en") => {
     category_not_found: "Category not found",
     category_status_changed: "Category status updated",
     notification_settings_updated: "Notification settings updated",
+    reel_deleted: "Reel deleted",
+    not_your_reel: "You can only delete your own reel",
     profile_updated: "Profile updated successfully",
     admin_not_found: "No admin account found with this email",
     otp_sent_on_mail: "Password reset code sent to your email",

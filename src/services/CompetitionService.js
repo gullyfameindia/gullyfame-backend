@@ -55,7 +55,7 @@ module.exports = () => {
 
   const getEndedCompetitionDetails = async (competition, objectCompId) => {
     // Get top 10 performers by votes
-    const topReels = await Reel.find({ competition: objectCompId })
+    const topReels = await Reel.find({ competition: objectCompId, isDeleted: { $ne: true } })
       .sort({ "stats.votes": -1 })
       .limit(10)
       .populate("author", "_id firstName lastName profileImage")
@@ -63,6 +63,7 @@ module.exports = () => {
 
     const totalParticipants = await Reel.countDocuments({
       competition: objectCompId,
+      isDeleted: { $ne: true },
     });
 
     const results = topReels.map((reel, index) => ({
@@ -87,7 +88,7 @@ module.exports = () => {
 
     const recommendedFormatted = await Promise.all(
       recommendedPastCompetitions.map(async (comp) => {
-        const winnerReel = await Reel.findOne({ competition: comp._id })
+        const winnerReel = await Reel.findOne({ competition: comp._id, isDeleted: { $ne: true } })
           .sort({ "stats.votes": -1 })
           .populate("author", "firstName lastName")
           .lean();
@@ -190,15 +191,17 @@ module.exports = () => {
   ) => {
     const totalEntries = await Reel.countDocuments({
       competition: objectCompId,
+      isDeleted: { $ne: true },
     });
 
     const is_current_user_entered = await Reel.exists({
       competition: objectCompId,
       author: objectUserId,
+      isDeleted: { $ne: true },
     });
 
     // Leaderboard preview - top 10 by votes
-    const topReels = await Reel.find({ competition: objectCompId })
+    const topReels = await Reel.find({ competition: objectCompId, isDeleted: { $ne: true } })
       .sort({ "stats.votes": -1 })
       .limit(10)
       .populate("author", "_id firstName lastName profileImage")
@@ -235,9 +238,10 @@ module.exports = () => {
 
     const totalEntries = await Reel.countDocuments({
       competition: objectCompId,
+      isDeleted: { $ne: true },
     });
 
-    const reels = await Reel.find({ competition: objectCompId })
+    const reels = await Reel.find({ competition: objectCompId, isDeleted: { $ne: true } })
       .sort({ "stats.votes": -1 })
       .skip(skip)
       .limit(limit)

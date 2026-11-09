@@ -127,6 +127,25 @@ const ReelSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    // The user who deleted their own reel, or the admin who removed it.
+    deletedBy: {
+      type: Schema.Types.ObjectId,
+      default: null,
+    },
+    deletedByRole: {
+      type: String,
+      enum: ["", "user", "admin"],
+      default: "",
+    },
+    // Admin-supplied reason, kept for moderation history.
+    deleteReason: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true },
 );

@@ -3,6 +3,7 @@ const {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectsCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
@@ -137,8 +138,51 @@ async function getSignedReadUrl(keyOrUrl, expiresIn = PRIVATE_READ_EXPIRY_SECOND
   return getSignedUrl(s3Client, command, { expiresIn });
 }
 
+/**
+ * Permanently remove objects from the bucket. Accepts keys or full URLs,
+ * ignores blanks, duplicates and anything that is not in our bucket, so it is
+ * safe to pass a reel's assorted url fields straight in.
+ * Returns { deleted: [key], errors: [{key, message}] }. It never throws, so a
+ * storage problem cannot fail the surrounding request.
+ */
+async function deleteObjects(keysOrUrls = []) {
+  const keys = [
+    ...new Set(
+      (Array.isArray(keysOrUrls) ? keysOrUrls : [keysOrUrls])
+        .map(toKey)
+        .filter(Boolean),
+    ),
+  ];
+
+  if (!keys.length) return { deleted: [], errors: [] };
+
+  const deleted = [];
+  const errors = [];
+
+  // DeleteObjects takes at most 1000 keys per call.
+  for (let i = 0; i < keys.length; i += 1000) {
+    const batch = keys.slice(i, i + 1000);
+    try {
+      const out = await s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket,
+          Delete: { Objects: batch.map((Key) => ({ Key })), Quiet: true },
+        }),
+      );
+      deleted.push(...batch.filter((k) => !(out.Errors || []).some((e) => e.Key === k)));
+      (out.Errors || []).forEach((e) => errors.push({ key: e.Key, message: e.Message }));
+    } catch (ex) {
+      console.log("s3.js => deleteObjects failed", ex.name, ex.message);
+      batch.forEach((k) => errors.push({ key: k, message: ex.message }));
+    }
+  }
+
+  return { deleted, errors };
+}
+
 module.exports = {
   uploadFileToAws,
   getPresignedUploadUrl,
   getSignedReadUrl,
+  deleteObjects,
 };

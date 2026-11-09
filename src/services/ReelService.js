@@ -1,5 +1,7 @@
 const Reel = require("../models/Reel");
 const ReelInteraction = require("../models/ReelInteraction");
+const Comment = require("../models/Comment");
+const fileUploadService = require("../util/s3");
 const Competition = require("../models/Competition");
 const Follow = require("../models/Follow");
 const AudioService = require("./AudioService");
@@ -421,6 +423,82 @@ module.exports = () => {
     return reel;
   };
 
+  // Every S3 object a reel owns: the video, its thumbnail, the voice-over and
+  // any raw clips the editor uploaded.
+  const mediaUrlsOf = (reel) => {
+    const urls = [reel.video_url, reel.thumbnail_url];
+    if (reel.voiceOver && reel.voiceOver.url) urls.push(reel.voiceOver.url);
+    if (reel.editState && Array.isArray(reel.editState.clips)) {
+      reel.editState.clips.forEach((c) => c && c.url && urls.push(c.url));
+    }
+    if (reel.editState && Array.isArray(reel.editState.overlays)) {
+      reel.editState.overlays.forEach((o) => o && o.imageUrl && urls.push(o.imageUrl));
+    }
+    return urls.filter(Boolean);
+  };
+
+  /**
+   * Soft-delete a reel and remove its files from S3.
+   *
+   * The record is kept (isDeleted = true) with who deleted it and why, so there
+   * is a moderation trail; every feed, leaderboard, profile and search already
+   * filters isDeleted out, so it disappears from the app immediately.
+   *
+   * byAdmin = false  -> the caller must be the reel's author
+   * byAdmin = true   -> any reel, with an optional reason
+   *
+   * Throws: reel_not_found, forbidden
+   */
+  const deleteReel = async (reelId, actorId, { byAdmin = false, reason = "" } = {}) => {
+    if (!mongoose.Types.ObjectId.isValid(String(reelId))) {
+      throw new Error("reel_not_found");
+    }
+
+    const reel = await Reel.findOne({
+      _id: new mongoose.Types.ObjectId(reelId),
+      isDeleted: { $ne: true },
+    });
+
+    if (!reel) throw new Error("reel_not_found");
+
+    if (!byAdmin && String(reel.author) !== String(actorId)) {
+      throw new Error("forbidden");
+    }
+
+    const mediaUrls = mediaUrlsOf(reel);
+
+    reel.isDeleted = true;
+    reel.isActive = false;
+    reel.deletedAt = new Date();
+    reel.deletedBy = actorId;
+    reel.deletedByRole = byAdmin ? "admin" : "user";
+    reel.deleteReason = byAdmin ? String(reason || "").slice(0, 500) : "";
+    await reel.save();
+
+    // Tidy up what hangs off the reel. Best effort: the reel is already gone
+    // from the app, so a failure here must not fail the request.
+    const [interactions, comments, storage] = await Promise.all([
+      ReelInteraction.deleteMany({ reel: reel._id }).catch((e) => {
+        console.log("deleteReel => interactions", e.message);
+        return { deletedCount: 0 };
+      }),
+      Comment.deleteMany({ reel: reel._id }).catch((e) => {
+        console.log("deleteReel => comments", e.message);
+        return { deletedCount: 0 };
+      }),
+      fileUploadService.deleteObjects(mediaUrls),
+    ]);
+
+    return {
+      _id: reel._id,
+      deletedAt: reel.deletedAt,
+      deletedByRole: reel.deletedByRole,
+      filesDeleted: storage.deleted.length,
+      interactionsRemoved: interactions.deletedCount || 0,
+      commentsRemoved: comments.deletedCount || 0,
+    };
+  };
+
   return {
     getMatrix,
     getCompetitionReels,
@@ -430,5 +508,6 @@ module.exports = () => {
     updateDraft,
     getDraftForUser,
     publishReel,
+    deleteReel,
   };
 };
