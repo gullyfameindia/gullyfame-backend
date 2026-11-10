@@ -175,6 +175,7 @@ module.exports = (lang = "en") => {
     category_status_changed: "Category status updated",
     notification_settings_updated: "Notification settings updated",
     reel_deleted: "Reel deleted",
+    audio_file_invalid: "That file is not a supported audio format",
     not_your_reel: "You can only delete your own reel",
     profile_updated: "Profile updated successfully",
     admin_not_found: "No admin account found with this email",

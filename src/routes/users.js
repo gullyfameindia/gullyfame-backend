@@ -124,6 +124,14 @@ userRouter.post(
   ResponseMiddleware,
 );
 
+// Original sounds this user created from their own reels (profile tab).
+userRouter.get(
+  "/audio/original",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(AudioController().myOriginalSounds),
+  ResponseMiddleware,
+);
+
 userRouter.get(
   "/audio/saved",
   AuthMiddleware().verifyUserToken,

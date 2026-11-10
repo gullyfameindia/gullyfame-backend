@@ -38,6 +38,20 @@ userRouter.get(
   ResponseMiddleware
 );
 
+// One sound, with its reel count - what the "use this sound" screen needs.
+userRouter.get(
+  "/audio/:audioId",
+  ErrorHandlerMiddleware(AudioController().detail),
+  ResponseMiddleware
+);
+
+// Every reel made with this sound.
+userRouter.get(
+  "/audio/:audioId/reels",
+  ErrorHandlerMiddleware(AudioController().reelsUsing),
+  ResponseMiddleware
+);
+
 /**
  * Filters + stickers (editor asset catalogs)
  */

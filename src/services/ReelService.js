@@ -5,16 +5,58 @@ const fileUploadService = require("../util/s3");
 const Competition = require("../models/Competition");
 const Follow = require("../models/Follow");
 const AudioService = require("./AudioService");
+const Audio = require("../models/Audio");
+const OriginalSoundService = require("./OriginalSoundService");
 const DailyMissionService = require("./DailyMissionService");
 const GamificationService = require("./GamificationService");
 const NotificationTriggerService = require("./NotificationTriggerService");
 const mongoose = require("mongoose");
 
 module.exports = () => {
+  // The feed used to return music as { id, name } only, with no url, so the
+  // client had nothing to play. Look the track up and hand back everything
+  // needed to play it and open its sound page.
+  const musicFor = async (reel) => {
+    const empty = {
+      id: "",
+      name: "",
+      url: "",
+      coverImage: "",
+      duration: 0,
+      isOriginalSound: false,
+    };
+
+    const id = reel.music && reel.music.id;
+    if (!id || !mongoose.Types.ObjectId.isValid(String(id))) return empty;
+
+    const audio = await Audio.findById(id)
+      .select(
+        "title artist url coverImage duration isOriginalSound createdByUser attribution license",
+      )
+      .lean();
+
+    if (!audio) return { ...empty, name: (reel.music && reel.music.name) || "" };
+
+    return {
+      id: String(audio._id),
+      name: audio.title,
+      artist: audio.artist || "",
+      url: audio.url,
+      coverImage: audio.coverImage || "",
+      duration: audio.duration || 0,
+      isOriginalSound: !!audio.isOriginalSound,
+      createdByUser: audio.createdByUser ? String(audio.createdByUser) : "",
+      // Show this wherever the track is played if it is set - CC-BY and
+      // similar licences require the credit to be visible.
+      attribution: audio.attribution || "",
+      license: audio.license || "",
+    };
+  };
+
   const formatReel = async (reel, userId) => {
     const objectUserId = new mongoose.Types.ObjectId(userId);
 
-    const [hasVoted, isSaved, hasTipped, isFollowing] = await Promise.all([
+    const [hasVoted, isSaved, hasTipped, isFollowing, music] = await Promise.all([
       ReelInteraction.exists({
         user: objectUserId,
         reel: reel._id,
@@ -34,6 +76,7 @@ module.exports = () => {
         follower: objectUserId,
         following: reel.author._id,
       }),
+      musicFor(reel),
     ]);
 
     return {
@@ -48,7 +91,7 @@ module.exports = () => {
         profile_picture_url: reel.author.profileImage || "",
         is_followed_by_me: !!isFollowing,
       },
-      music: reel.music || { id: "", name: "" },
+      music,
       stats: {
         votes: reel.stats.votes,
         comments: reel.stats.comments,
@@ -414,6 +457,11 @@ module.exports = () => {
 
     if (update.music && update.music.id) {
       await AudioService().incrementUsage(update.music.id);
+    } else {
+      // No library track chosen, so this reel's own audio becomes a sound
+      // other people can record over. Runs in the background: publishing
+      // must not wait on ffmpeg, and a failure just means no original sound.
+      OriginalSoundService.createFromReelInBackground(reel._id);
     }
 
     GamificationService()
@@ -467,6 +515,11 @@ module.exports = () => {
 
     const mediaUrls = mediaUrlsOf(reel);
 
+    // If this reel produced an original sound, it only goes when nobody else
+    // is using it - otherwise their reels would lose their audio.
+    const sound = await OriginalSoundService.handleSourceReelDeleted(reel._id);
+    if (sound.removed && sound.fileUrl) mediaUrls.push(sound.fileUrl);
+
     reel.isDeleted = true;
     reel.isActive = false;
     reel.deletedAt = new Date();
@@ -493,6 +546,8 @@ module.exports = () => {
       _id: reel._id,
       deletedAt: reel.deletedAt,
       deletedByRole: reel.deletedByRole,
+      originalSoundRemoved: sound.removed,
+      originalSoundKeptInUse: sound.keptInUse,
       filesDeleted: storage.deleted.length,
       interactionsRemoved: interactions.deletedCount || 0,
       commentsRemoved: comments.deletedCount || 0,
