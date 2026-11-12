@@ -64,7 +64,8 @@ module.exports = () => {
     let logs = await LogoService().fetchByQuery({});
 
     req.msg = "success";
-    req.rData = logs.logo;
+    // Nothing uploaded yet -> empty, and the app shows its built-in logo.
+    req.rData = (logs && logs.logo) || "";
 
     next();
   };
@@ -75,7 +76,7 @@ module.exports = () => {
     let logs = await LogoService().fetchByQuery({});
 
     req.msg = "success";
-    req.rData = logs.splash;
+    req.rData = (logs && logs.splash) || [];
 
     next();
   };

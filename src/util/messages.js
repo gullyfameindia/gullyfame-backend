@@ -161,6 +161,7 @@ module.exports = (lang = "en") => {
     invalid_amount: "amount must be a positive number",
     cannot_tip_self: "You cannot tip yourself",
     notification_not_found: "Notification not found",
+    Settings_not_found: "This page hasn't been added yet",
     notification_deleted: "Notification deleted",
     notifications_cleared: "All notifications deleted",
     reel_reported: "Thanks for reporting. Our team will review this reel.",

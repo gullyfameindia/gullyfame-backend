@@ -72,6 +72,7 @@ async function check(area, label, method, path, { expect = "ok", shape, ...opts 
   else if (r.status === 404 && r.json && r.json.error === "Not found") { verdict = "FAIL"; note = "route does not exist"; }
   else if (code === null) { verdict = "FAIL"; note = `not the {code,message,data} shape: ${String(msg).slice(0, 80)}`; }
   else if (CRASH.test(msg)) { verdict = "FAIL"; note = `handler crashed: ${String(msg).slice(0, 90)}`; }
+  else if (expect === "ok" && code === 0 && /hasn't been added yet/.test(msg)) { verdict = "WARN"; note = "no content yet - add it in the admin panel"; }
   else if (expect === "ok" && code !== 1) { verdict = "FAIL"; note = `expected success, got code ${code}: ${msg}`; }
   else if (expect === "reject" && code === 1) { verdict = "WARN"; note = "accepted input that should have been refused"; }
   else if (expect === "reject") { note = `refused as expected: ${msg}`; }
@@ -114,8 +115,8 @@ async function main() {
 
   // ---------------------------------------------------------------- public (no login)
   console.log(c.b("-- Public, no login"));
-  await check("Public", "logo", "GET", "public/logo", { auth: false });
-  await check("Public", "splash", "GET", "public/splash", { auth: false });
+  await check("Public", "logo", "GET", "public/logo", { auth: false, shape: (d) => (d ? null : "no logo uploaded yet - the app uses its built-in one") });
+  await check("Public", "splash", "GET", "public/splash", { auth: false, shape: (d) => (Array.isArray(d) && d.length ? null : "no splash images uploaded yet") });
   const audioPage = await check("Public", "music library", "GET", "public/audio?sort=trending&limit=5", {
     auth: false, shape: (d) => missing("audio list", has(d, ["audios", "hasMore", "total"])) ||
       (d.audios[0] && missing("track", has(d.audios[0], ["url", "title", "duration"]))),
