@@ -1,5 +1,9 @@
 const UserService = require("../services/UserService");
 const FollowService = require("../services/FollowService");
+const ProfileViewService = require("../services/ProfileViewService");
+const ReelService = require("../services/ReelService");
+const Reel = require("../models/Reel");
+const Follow = require("../models/Follow");
 const fileUploadService = require("../util/s3");
 var ObjectId = require("mongoose").Types.ObjectId;
 
@@ -294,7 +298,104 @@ module.exports = () => {
     next();
   };
 
+  /**
+   * GET /user/reels/saved and /user/reels/liked
+   * ?cursor=<from the previous page>&limit=20 -> { reels, nextCursor, hasMore }
+   * Same reel shape as the feed.
+   */
+  const interactedReels = (kind) => async (req, res, next) => {
+    const { userId } = req.body;
+    const cursor = req.query.cursor || null;
+    const limit = Math.min(Math.max(parseInt(req.query.limit) || 20, 1), 50);
+
+    req.rData = await ReelService().listInteractedReels(userId, kind, cursor, limit);
+    req.msg = "success";
+    next();
+  };
+  const savedReels = interactedReels("save");
+  const likedReels = interactedReels("like");
+
+  /**
+   * GET /user/:userId - another person's public profile.
+   * Only public fields: never email, mobile, date of birth, location, device
+   * tokens or anything account-private.
+   */
+  const PUBLIC_FIELDS = "_id firstName lastName username profileImage role level streakCount createdAt";
+
+  const getPublicProfile = async (req, res, next) => {
+    console.log("UserController => getPublicProfile");
+    const viewerId = req.body.userId;
+    const targetId = req.params.userId;
+
+    if (!ObjectId.isValid(String(targetId))) {
+      req.rCode = 5;
+      req.msg = "user_not_found";
+      req.rData = {};
+      return next();
+    }
+
+    const user = await UserService().fetchByQuery({
+      _id: targetId,
+      isActive: true,
+      isDeleted: { $ne: true },
+    });
+
+    if (!user) {
+      req.rCode = 5;
+      req.msg = "user_not_found";
+      req.rData = {};
+      return next();
+    }
+
+    const [counts, reelsCount, followsThem, followsMe] = await Promise.all([
+      FollowService().getCounts(user._id),
+      Reel.countDocuments({
+        author: user._id,
+        isActive: true,
+        isDeleted: { $ne: true },
+        status: { $ne: "draft" },
+      }),
+      Follow.exists({ follower: viewerId, following: user._id }),
+      Follow.exists({ follower: user._id, following: viewerId }),
+      // Counted for the owner's "profile views" insight; never blocks the profile.
+      ProfileViewService().recordView(user._id, viewerId),
+    ]);
+
+    const raw = typeof user.toObject === "function" ? user.toObject() : user;
+    const profile = {};
+    for (const f of PUBLIC_FIELDS.split(" ")) profile[f] = raw[f] ?? null;
+
+    req.rData = {
+      ...profile,
+      profileImage: raw.profileImage || "",
+      followersCount: counts.followersCount,
+      followingCount: counts.followingCount,
+      reelsCount,
+      isFollowedByMe: !!followsThem,
+      followsMe: !!followsMe,
+      isMe: String(user._id) === String(viewerId),
+    };
+    req.msg = "success";
+    next();
+  };
+
+  /**
+   * GET /user/insights?days=30 - who looked at my profile.
+   * -> { days, views, uniqueViewers, daily: [{ date, views }] }  (days 1-90)
+   */
+  const insights = async (req, res, next) => {
+    console.log("UserController => insights");
+    const { userId } = req.body;
+    req.rData = await ProfileViewService().getInsights(userId, req.query.days);
+    req.msg = "success";
+    next();
+  };
+
   return {
+    savedReels,
+    likedReels,
+    getPublicProfile,
+    insights,
     followers,
     following,
     /**

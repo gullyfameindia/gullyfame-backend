@@ -1,6 +1,8 @@
 const Reel = require("../models/Reel");
 const ReelInteraction = require("../models/ReelInteraction");
 const Comment = require("../models/Comment");
+const CommentLike = require("../models/CommentLike");
+const ReportService = require("./ReportService");
 const fileUploadService = require("../util/s3");
 const Competition = require("../models/Competition");
 const Follow = require("../models/Follow");
@@ -56,11 +58,16 @@ module.exports = () => {
   const formatReel = async (reel, userId) => {
     const objectUserId = new mongoose.Types.ObjectId(userId);
 
-    const [hasVoted, isSaved, hasTipped, isFollowing, music] = await Promise.all([
+    const [hasVoted, isLiked, isSaved, hasTipped, isFollowing, music] = await Promise.all([
       ReelInteraction.exists({
         user: objectUserId,
         reel: reel._id,
         type: "vote",
+      }),
+      ReelInteraction.exists({
+        user: objectUserId,
+        reel: reel._id,
+        type: "like",
       }),
       ReelInteraction.exists({
         user: objectUserId,
@@ -94,6 +101,7 @@ module.exports = () => {
       music,
       stats: {
         votes: reel.stats.votes,
+        likes: reel.stats.likes || 0,
         comments: reel.stats.comments,
         shares: reel.stats.shares,
         saves: reel.stats.saves,
@@ -101,6 +109,7 @@ module.exports = () => {
       },
       user_interactions: {
         has_voted: !!hasVoted,
+        is_liked: !!isLiked,
         is_saved: !!isSaved,
         has_tipped: !!hasTipped,
       },
@@ -329,12 +338,22 @@ module.exports = () => {
     return map[actionType] || null;
   };
 
-  const listReels = async (userId, cursor, limit) => {
+  // author: optional user id - only that user's reels (their profile grid).
+  // A malformed id returns an empty page rather than silently falling back to
+  // everyone's reels, which is what the app used to get.
+  const listReels = async (userId, cursor, limit, author) => {
     const query = {
       isActive: true,
       isDeleted: { $ne: true },
       status: { $ne: "draft" },
     };
+
+    if (author) {
+      if (!mongoose.Types.ObjectId.isValid(String(author))) {
+        return { nextCursor: null, hasMore: false, reels: [] };
+      }
+      query.author = new mongoose.Types.ObjectId(String(author));
+    }
 
     if (cursor) {
       try {
@@ -540,6 +559,12 @@ module.exports = () => {
         return { deletedCount: 0 };
       }),
       fileUploadService.deleteObjects(mediaUrls),
+      CommentLike.deleteMany({ reel: reel._id }).catch((e) => {
+        console.log("deleteReel => comment likes", e.message);
+      }),
+      ReportService().closeReportsForDeletedReel(reel._id).catch((e) => {
+        console.log("deleteReel => reports", e.message);
+      }),
     ]);
 
     return {
@@ -554,7 +579,78 @@ module.exports = () => {
     };
   };
 
+  /**
+   * Reels the user saved or liked, most recent first.
+   * kind: "save" | "like". Cursor is the id of the last interaction returned,
+   * so the page shape matches the feed: { reels, nextCursor, hasMore }.
+   * Reels deleted since are skipped (their interactions are normally removed
+   * with them; this guards against older data).
+   */
+  const listInteractedReels = async (userId, kind, cursor, limit = 20) => {
+    const objectUserId = new mongoose.Types.ObjectId(userId);
+
+    if (cursor && !mongoose.Types.ObjectId.isValid(String(cursor))) {
+      return { nextCursor: null, hasMore: false, reels: [] };
+    }
+
+    // Fill the page even when some saved/liked reels have since been deleted,
+    // so a page never comes back empty while more remain. Bounded, so a user
+    // with lots of stale interactions can't make one request run forever.
+    const MAX_ROUNDS = 5;
+    let after = cursor ? new mongoose.Types.ObjectId(String(cursor)) : null;
+    let lastSeen = null;
+    let exhausted = false;
+    const picked = [];
+
+    for (let round = 0; round < MAX_ROUNDS && picked.length < limit && !exhausted; round++) {
+      const query = { user: objectUserId, type: kind };
+      if (after) query._id = { $lt: after };
+
+      const batch = await ReelInteraction.find(query)
+        .sort({ _id: -1 })
+        .limit(limit + 1)
+        .select("_id reel")
+        .lean();
+
+      if (batch.length <= limit) exhausted = true;
+      const slice = batch.slice(0, limit);
+      if (!slice.length) break;
+
+      const reels = await Reel.find({
+        _id: { $in: slice.map((i) => i.reel) },
+        isActive: true,
+        isDeleted: { $ne: true },
+        status: { $ne: "draft" },
+      })
+        .populate("author", "_id firstName lastName username profileImage")
+        .lean();
+      const byId = new Map(reels.map((r) => [String(r._id), r]));
+
+      for (const i of slice) {
+        lastSeen = i._id;
+        const reel = byId.get(String(i.reel));
+        if (reel && reel.author) picked.push(reel);
+        if (picked.length === limit) {
+          // Stopped mid-batch: whatever follows in this batch is still unread.
+          if (i !== slice[slice.length - 1]) exhausted = false;
+          break;
+        }
+      }
+      after = lastSeen;
+    }
+
+    const formatted = await Promise.all(picked.map((r) => formatReel(r, userId)));
+    const hasMore = !exhausted && lastSeen !== null;
+
+    return {
+      nextCursor: hasMore ? String(lastSeen) : null,
+      hasMore,
+      reels: formatted,
+    };
+  };
+
   return {
+    listInteractedReels,
     getMatrix,
     getCompetitionReels,
     toggleAction,

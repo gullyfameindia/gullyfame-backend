@@ -35,4 +35,22 @@ notificationRouter.put(
   ResponseMiddleware,
 );
 
+/**
+ * DELETE /notification - Delete all of the caller's notifications
+ * DELETE /notification/:notificationId - Delete one notification
+ */
+notificationRouter.delete(
+  "/",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(NotificationController().deleteAllNotifications),
+  ResponseMiddleware,
+);
+
+notificationRouter.delete(
+  "/:notificationId",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(NotificationController().deleteNotification),
+  ResponseMiddleware,
+);
+
 module.exports = notificationRouter;

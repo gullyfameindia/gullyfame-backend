@@ -12,6 +12,7 @@ const AudioController = require("../controllers/AudioController");
 const FilterController = require("../controllers/FilterController");
 const StickerController = require("../controllers/StickerController");
 const SoundFxController = require("../controllers/SoundFxController");
+const ReportController = require("../controllers/ReportController");
 
 // Only a logged-in admin can create another admin. The first admin comes
 // from `node scripts/seed.js` (SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD in .env).
@@ -181,6 +182,26 @@ adminRouter.delete(
   "/reels/:reelId",
   AuthMiddleware().verifyAdminToken,
   ErrorHandlerMiddleware(AdminController().deleteReel),
+  ResponseMiddleware
+);
+
+/**
+ * Reel reports
+ * GET   /admin/reports?status=open|dismissed|removed|all&page&limit&reelId
+ * PATCH /admin/reports/:reportId  { action: "dismiss" | "remove", note? }
+ *       "remove" deletes the reel and closes every open report on it.
+ */
+adminRouter.get(
+  "/reports",
+  AuthMiddleware().verifyAdminToken,
+  ErrorHandlerMiddleware(ReportController().listReports),
+  ResponseMiddleware
+);
+
+adminRouter.patch(
+  "/reports/:reportId",
+  AuthMiddleware().verifyAdminToken,
+  ErrorHandlerMiddleware(ReportController().reviewReport),
   ResponseMiddleware
 );
 

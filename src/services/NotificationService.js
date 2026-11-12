@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Notification = require("../models/Notification");
 const User = require("../models/User");
 const pushService = require("../util/push");
@@ -52,7 +53,7 @@ module.exports = () => {
     });
 
     const notifications = await Notification.find(query)
-      .select("_id title description status createdAt")
+      .select("_id title description status type data createdAt")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -66,8 +67,9 @@ module.exports = () => {
   };
 
   const markAsRead = async (notificationId, userId) => {
+    if (!mongoose.Types.ObjectId.isValid(String(notificationId || ""))) return null;
     return Notification.findOneAndUpdate(
-      { _id: notificationId, userId },
+      { _id: notificationId, userId, isActive: true },
       { status: "read" },
       { new: true },
     );
@@ -75,10 +77,29 @@ module.exports = () => {
 
   const markAllAsRead = async (userId) => {
     const result = await Notification.updateMany(
-      { userId, status: "unRead" },
+      { userId, status: "unRead", isActive: true },
       { status: "read" },
     );
     return { updated: result.modifiedCount || 0 };
+  };
+
+  // Deleting hides the notification from the user's list (isActive: false);
+  // the row stays for support/audit.
+  const deleteNotification = async (notificationId, userId) => {
+    if (!mongoose.Types.ObjectId.isValid(String(notificationId || ""))) return null;
+    return Notification.findOneAndUpdate(
+      { _id: notificationId, userId, isActive: true },
+      { isActive: false },
+      { new: true },
+    );
+  };
+
+  const deleteAllNotifications = async (userId) => {
+    const result = await Notification.updateMany(
+      { userId, isActive: true },
+      { isActive: false },
+    );
+    return { deleted: result.modifiedCount || 0 };
   };
 
   return {
@@ -87,5 +108,7 @@ module.exports = () => {
     notifyUser,
     markAsRead,
     markAllAsRead,
+    deleteNotification,
+    deleteAllNotifications,
   };
 };

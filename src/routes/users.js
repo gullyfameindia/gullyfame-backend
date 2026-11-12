@@ -235,4 +235,45 @@ userRouter.get(
   ResponseMiddleware,
 );
 
+/**
+ * Reels the signed-in user saved / liked.
+ * ?cursor=&limit= -> { reels, nextCursor, hasMore }, same reel shape as GET /reels
+ */
+userRouter.get(
+  "/reels/saved",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().savedReels),
+  ResponseMiddleware,
+);
+
+userRouter.get(
+  "/reels/liked",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().likedReels),
+  ResponseMiddleware,
+);
+
+/**
+ * Profile views of the signed-in user. ?days=30 (1-90)
+ * -> { days, views, uniqueViewers, daily: [{ date, views }] }
+ */
+userRouter.get(
+  "/insights",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().insights),
+  ResponseMiddleware,
+);
+
+/**
+ * Another person's public profile.
+ * KEEP THIS LAST: "/:userId" matches any single segment, so every literal
+ * GET route above (/profile, /wallet, /progress ...) must be registered first.
+ */
+userRouter.get(
+  "/:userId",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(UserController().getPublicProfile),
+  ResponseMiddleware,
+);
+
 module.exports = userRouter;

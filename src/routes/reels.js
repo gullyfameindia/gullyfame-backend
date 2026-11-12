@@ -4,6 +4,7 @@ const ReelController = require("../controllers/ReelController");
 const CaptionController = require("../controllers/CaptionController");
 const CommentController = require("../controllers/CommentController");
 const WalletController = require("../controllers/WalletController");
+const ReportController = require("../controllers/ReportController");
 const ErrorHandlerMiddleware = require("../middlewares/ErrorHandlerMiddleware");
 const ResponseMiddleware = require("../middlewares/ResponseMiddleware");
 const AuthMiddleware = require("../middlewares/AuthMiddleware");
@@ -108,6 +109,29 @@ reelRouter.delete(
   "/comments/:commentId",
   AuthMiddleware().verifyUserToken,
   ErrorHandlerMiddleware(CommentController().deleteComment),
+  ResponseMiddleware,
+);
+
+/**
+ * POST /reels/comments/:commentId/like - Like / unlike a comment
+ * Body (optional): { liked: true | false }; without it the like toggles.
+ */
+reelRouter.post(
+  "/comments/:commentId/like",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(CommentController().likeComment),
+  ResponseMiddleware,
+);
+
+/**
+ * POST /reels/:reelId/report - Report someone else's reel
+ * Body: { reason, details? }  reason: spam | nudity | violence | hate | harassment |
+ *       self_harm | copyright | misinformation | other
+ */
+reelRouter.post(
+  "/:reelId/report",
+  AuthMiddleware().verifyUserToken,
+  ErrorHandlerMiddleware(ReportController().reportReel),
   ResponseMiddleware,
 );
 

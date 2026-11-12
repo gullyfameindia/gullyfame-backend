@@ -24,5 +24,7 @@ const ReelInteractionSchema = new Schema(
 
 ReelInteractionSchema.index({ user: 1, reel: 1, type: 1 }, { unique: true });
 ReelInteractionSchema.index({ reel: 1, type: 1 });
+// "My saved / liked reels", newest first.
+ReelInteractionSchema.index({ user: 1, type: 1, _id: -1 });
 
 module.exports = mongoose.model("ReelInteraction", ReelInteractionSchema);

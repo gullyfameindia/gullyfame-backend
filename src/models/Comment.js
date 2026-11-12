@@ -23,6 +23,11 @@ const CommentSchema = new Schema(
       ref: "Comment",
       default: null,
     },
+    likesCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     isDeleted: {
       type: Boolean,
       default: false,

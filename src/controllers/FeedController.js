@@ -76,7 +76,10 @@ module.exports = () => {
     const cursor = req.query.cursor || null;
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
 
-    const data = await ReelService().listReels(userId, cursor, limit);
+    // ?author=<userId> -> only that user's reels (profile grid)
+    const author = req.query.author || null;
+
+    const data = await ReelService().listReels(userId, cursor, limit, author);
 
     req.rData = data;
     req.msg = "success";

@@ -25,16 +25,15 @@ module.exports = () => {
     });
   };
 
-  const verifyPassword = (id, password) => {
+  // false (never a hang or a crash) for an unknown user, an account with no
+  // password yet (OTP / social sign-up) or a wrong password.
+  const verifyPassword = async (id, password) => {
     console.log("UserService => verifyPassword");
-    return new Promise(async function (resolve, reject) {
-      let UserVerify = await User.findById(id);
-
-      if (!UserVerify) resolve(false);
-      let v = await helpers().checkPassword(password, UserVerify.password);
-
-      return resolve(v);
-    });
+    const UserVerify = await User.findById(id).select("password");
+    if (!UserVerify || !UserVerify.password || typeof password !== "string") return false;
+    return helpers()
+      .checkPassword(password, UserVerify.password)
+      .catch(() => false);
   };
 
   const deleteUser = (id) => {

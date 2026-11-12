@@ -52,5 +52,32 @@ module.exports = () => {
     next();
   };
 
-  return { getNotifications, markAsRead, markAllAsRead };
+  /** DELETE /notification/:notificationId - remove one of the caller's notifications */
+  const deleteNotification = async (req, res, next) => {
+    console.log("NotificationController => deleteNotification");
+    const { notificationId } = req.params;
+    const { userId } = req.body;
+
+    const data = await NotificationService().deleteNotification(notificationId, userId);
+    if (!data) {
+      req.rCode = 5;
+      req.msg = "notification_not_found";
+      return next();
+    }
+
+    req.rData = { _id: data._id, deleted: true };
+    req.msg = "notification_deleted";
+    next();
+  };
+
+  /** DELETE /notification - remove all of the caller's notifications */
+  const deleteAllNotifications = async (req, res, next) => {
+    console.log("NotificationController => deleteAllNotifications");
+    const { userId } = req.body;
+    req.rData = await NotificationService().deleteAllNotifications(userId);
+    req.msg = "notifications_cleared";
+    next();
+  };
+
+  return { getNotifications, markAsRead, markAllAsRead, deleteNotification, deleteAllNotifications };
 };

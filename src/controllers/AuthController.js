@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService");
+const User = require("../models/User");
 const helpers = require("../util/helpers.js");
 const OtpService = require("../services/OtpService");
 const PasswordResetService = require("../services/PasswordResetService");
@@ -380,14 +381,52 @@ module.exports = () => {
     next();
   };
 
+  /**
+   * PUT /auth/reset-password (logged in) - change password.
+   * Body: { password, currentPassword }
+   * An account that already has a password must send the current one.
+   * Accounts created with OTP or social login have none yet and can set one
+   * without it.
+   */
   const resetPassword = async (req, res, next) => {
     console.log("AuthController => resetPassword");
-    let { password, userId } = req.body;
-    // console.log("req.body", req.body)
+    const { password, currentPassword, userId } = req.body;
 
-    password = await helpers().hashPassword(password);
+    if (typeof password !== "string" || password.length < 6) {
+      req.rCode = 0;
+      req.msg = "password_too_short";
+      req.rData = {};
+      return next();
+    }
 
-    user = await UserService().updateUsers(userId, { password });
+    const account = await User.findById(userId).select("password");
+    if (!account) {
+      req.rCode = 5;
+      req.msg = "user_not_found";
+      req.rData = {};
+      return next();
+    }
+
+    if (account.password) {
+      if (typeof currentPassword !== "string" || !currentPassword) {
+        req.rCode = 0;
+        req.msg = "current_password_required";
+        req.rData = {};
+        return next();
+      }
+      const valid = await helpers()
+        .checkPassword(currentPassword, account.password)
+        .catch(() => false);
+      if (!valid) {
+        req.rCode = 0;
+        req.msg = "incorrect_password";
+        req.rData = {};
+        return next();
+      }
+    }
+
+    const hashed = await helpers().hashPassword(password);
+    await UserService().updateUsers(userId, { password: hashed });
 
     req.msg = "password_changed";
     next();
